@@ -1,9 +1,13 @@
 import WooCommerceRestApi from "@woocommerce/woocommerce-rest-api";
-import LatestProducts from "./components/LatestProducts";
+import LatestProducts from "../components/LatestProducts";
+import Categories from "../components/Categories";
 
-export default function Home( { latestProducts } ) {
+export default function Home( { latestProducts, categories } ) {
   return (
-      <LatestProducts products={latestProducts} />
+      <>
+        <Categories categories={categories} />
+        <LatestProducts products={latestProducts} />
+      </>
   )
 }
 
@@ -18,19 +22,25 @@ export async function getStaticProps( context ) {
   });
 
   try {
-    const response = await api.get('products',{ per_page: 6 });
-    const latestProducts = response.data;
+    // categories
+    const categoriesResponse = await api.get('products/categories',{ per_page: 3 });
+    const categories = categoriesResponse.data;
+
+    //latest products
+    const latestProductsResponse = await api.get('products',{ per_page: 6 });
+    const latestProducts = latestProductsResponse.data;
 
     return {
       props: {
-        latestProducts: latestProducts
+        latestProducts: latestProducts,
+        categories: categories
       }
     }
   } catch (error) {
-    console.log(error)
     return {
       props: {
-        latestProducts: []
+        latestProducts: [],
+        categories: []
       }
     }
   }
