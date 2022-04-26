@@ -1,17 +1,31 @@
 import React from 'react';
+import Image from "next/image";
 
 const Product = ({ product }) => {
     return (
         <>
             <a href="#" className="group">
                 <div
-                    className="w-full bg-gray-200 rounded-lg overflow-hidden">
+                    className="w-full rounded-lg overflow-hidden">
                     {
-                        product.images.length > 0 && (
-                            <img src={product.images[0].src}
-                                 alt={product.name}
-                                 className="w-full h-full object-center object-cover group-hover:opacity-75" />
+                        product.images.length > 0 ? (
+                            <Image
+                                src={product.images[0].src}
+                                alt={product.name}
+                                className="w-full h-full object-center object-cover group-hover:opacity-75"
+                                width={400}
+                                height={400}
+                            />
+
                         )
+                            :
+                            <Image
+                                src={`/placeholder.png`}
+                                alt={product.name}
+                                className="w-full h-full object-center object-cover group-hover:opacity-75"
+                                width={400}
+                                height={400}
+                            />
                     }
 
                 </div>
