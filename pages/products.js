@@ -1,12 +1,13 @@
 import React from 'react';
 import WooCommerceRestApi from "@woocommerce/woocommerce-rest-api";
-import Categories from "../components/Categories";
-import LatestProducts from "../components/LatestProducts";
+import Products from "../components/Products";
 
-const Products = ( { latestProducts } ) => {
+const LatestProducts = ( { latestProducts } ) => {
     return (
-        <>
-            <LatestProducts products={latestProducts} />
+        <>  
+            <div className='pt-20'>
+                <Products products={latestProducts} />
+            </div>
         </>
     );
 };
@@ -40,4 +41,4 @@ export async function getStaticProps( context ) {
     }
 }
 
-export default Products;
+export default LatestProducts;
