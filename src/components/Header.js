@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import Link from "next/link";
-import { CartContext } from '../context/CartContext';
+import { CartContext } from '../../context/CartContext';
 
 const Header = () => {
     const {state} = useContext(CartContext);
