@@ -25,7 +25,7 @@ const CategoryWidget = () => {
                             categories.map( cat => {
                                 return (
                                     <li className="text-sm hover:text-indigo-600" key={cat.id}>
-                                        <Link href={`shop?category=${cat.slug}`}><a>{cat.name}</a></Link>
+                                        <Link href={`shop?category=${cat.id}`}><a>{cat.name}</a></Link>
                                     </li>
                                 )
                             } )
