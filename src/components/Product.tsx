@@ -1,9 +1,14 @@
 import React, { useContext, useEffect, useState } from 'react';
 import Image from 'next/image';
-import { CartContext } from '../../../context/CartContext';
+import { CartContext } from '../../context/CartContext';
 import Link from 'next/link';
+import { Product } from '../types/Product';
 
-const Product = ({ product }) => {
+type ProductProps = {
+  product: Product
+}
+
+const Product = ({ product }: ProductProps) => {
 
   const { state, dispatch } = useContext(CartContext);
 
@@ -36,7 +41,7 @@ const Product = ({ product }) => {
     <>
       <div className='mb-8'>
         <Link href={`/product/${product.id}`}>
-          <a className="group">
+          <a className='group'>
             <div
               className="w-full rounded-lg overflow-hidden">
               {
@@ -65,8 +70,7 @@ const Product = ({ product }) => {
             <p className="mt-1 text-lg font-medium text-gray-900" dangerouslySetInnerHTML={{ __html: product.price_html }}></p>
           </a>
         </Link>
-                
-        {
+        {/* {
           (product.type === 'grouped' || product.type === 'variable' ) && <a onClick={(event) => addToCart(event,product)} className={'px-4 py-2 bg-[#E5E7EB] text-black inline-block mt-3 rounded cursor-pointer'}>Read More</a>
         }
         {
@@ -80,13 +84,14 @@ const Product = ({ product }) => {
                   </svg>
                 )
               }
-                            Add to cart
+                Add to cart
             </a>
           )
         }
         {
           product.type === 'external' && <a onClick={(event) => addToCart(event,product)} className={'px-4 py-2 bg-[#E5E7EB] text-black inline-block mt-3 rounded cursor-pointer'}>{product?.button_text ?? 'Buy product'}</a>
-        }
+        } */}
+        <a className='px-4 py-2 bg-[#E5E7EB] text-black inline-block mt-3 rounded cursor-pointer'>{product.add_to_cart.text}</a>
 
       </div>
     </>
