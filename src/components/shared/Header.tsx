@@ -64,7 +64,7 @@ const Header = () => {
                   </Link>
                 </li>
                 <li>
-                  <Link href="/">
+                  <Link href="/shop">
                     <a className='text-white text-sm font-medium'>Shop</a>
                   </Link>
                 </li>

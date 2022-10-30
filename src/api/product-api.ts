@@ -41,3 +41,21 @@ export function getProduct(id) {
     queryFn: ( { queryKey } ) => fetcher(queryKey)
   });
 }
+
+export function useProductByCategory(id: string) {
+  const fetcher = async (queryKey: [string, string]) => {
+    const [url, id] = queryKey;
+
+    const response = await api.get(url, {
+      params: {
+        category: id
+      }
+    });
+
+    return response.data;
+  }
+  return useQuery<Product[], Error>({
+    queryKey: ['products',id],
+    queryFn: ({ queryKey }) => fetcher(queryKey as [string, string])
+  })
+}

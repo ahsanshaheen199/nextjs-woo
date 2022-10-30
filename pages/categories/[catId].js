@@ -1,56 +1,39 @@
-import axios from 'axios';
-import React from 'react'
-import Product from '../../components/Product';
+import { useRouter } from 'next/router';
+import { useProductByCategory } from '../../src/api/product-api';
+import { useCategoryById } from '../../src/api/category-api';
+import Product from '../../src/components/Product';
+import ProductLoader from '../../src/components/shared/ProductLoader';
 
-const ProductCategoty = ({products}) => {
+const ProductCategory = () => {
+  const { query } = useRouter();
+  const { isLoading: isProductLoading, data: products } = useProductByCategory(query.catId);
+  const { isLoading: isCategoryLoading, data: category } = useCategoryById(query.catId);
+
   return (
-    <div className={'flex flex-wrap -mx-4 py-20'}>
+    <div className='py-20'>
+      <div className='container mx-auto px-4'>
         {
-            products.length > 0 ?
-
-                products.map( product => {
+          isCategoryLoading  ? <div className='animate-pulse'><div className='max-w-md h-10 bg-gray-200 mx-auto'></div></div> : <div className='mb-15'><h2 className='text-center text-2xl font-bold'>{ category.name }</h2></div>
+        }
+        {
+          isProductLoading ? 
+            ( <div className="grid lg:grid-cols-4 gap-4 mt-20">
+              <ProductLoader count={10} />
+            </div> ) : (
+              <div className="grid lg:grid-cols-4 gap-4 mt-20">
+                {
+                  products.map( product => {
                     return (
-                        <div key={product.id} className={'w-4/12 px-4 mb-10'}>
-                            <Product product={product} />
-                        </div>
-                    )
-                } )
-
-                : <div className={'w-full text-center px-4'}><h2>No Product Found</h2></div>
+                      <Product key={product.id} product={product} />
+                    );
+                  } )
+                }
+              </div>
+            ) 
         }
+      </div>
     </div>
-  )
-}
+  );
+};
 
-
-export async function getServerSideProps(context) {
-
-    const {catId} = context.query;
-
-    try {
-
-      const response =  await axios({
-        method: 'GET',
-        url: process.env.NEXT_PUBLIC_WORDPRESS_SITE_URL + 'wp-json/wc/store/products/',
-        params: {
-          per_page: 10,
-          category: catId
-        }
-      });
-
-      return {
-          props: {
-            products: response.data
-          }
-      }
-
-    } catch( error ) {
-      return {
-        props: {
-          products: []
-        }
-      }
-    }
-}
-
-export default ProductCategoty;
+export default ProductCategory;

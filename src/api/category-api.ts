@@ -35,3 +35,20 @@ export function getCategoriesTree ()  {
     },
   });
 }
+
+export function useCategoryById(id: string) {
+
+  const fetcher = async (queryKey: [string, string]) => {
+    const [url,id] = queryKey;
+    
+
+    const response = await api.get(`${url}/${id}`);
+
+    return response.data;
+  }
+
+  return useQuery<Category,Error>({
+    queryKey: ['products/categories',id],
+    queryFn: ( { queryKey } ) => fetcher(queryKey as [string, string])
+  })
+}
