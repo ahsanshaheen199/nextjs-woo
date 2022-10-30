@@ -29,8 +29,8 @@ const Pagination = ({count}: PaginationProps) => {
                             <a
                                 className={
                                     classNames(
-                                        'py-2 px-3 leading-tight  bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 rounded',
-                                        currentPage === i + 1 ? 'bg-blue-600 text-white' : 'text-gray-500'
+                                        'py-2 px-3 leading-tight border border-gray-300 hover:bg-gray-100 hover:text-gray-700 rounded',
+                                        currentPage === i + 1 ? 'bg-[#ee4e23] text-white' : 'text-gray-500'
                                     )}
                                 >
                                 {i+1}

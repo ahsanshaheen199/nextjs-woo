@@ -3,3 +3,7 @@ export type Category = {
     name: string;
     slug: string;
 }
+
+export type CategoryTree = Category & {
+    children: Category[]
+}

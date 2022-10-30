@@ -1,9 +1,9 @@
 import Link from 'next/link';
-import { getCategories } from '../../api/category-api';
+import { getCategoriesTree } from '../../api/category-api';
 
 const CategoryWidget = () => {
 
-  const { isLoading, error, data: categories } = getCategories();
+  const { isLoading, error, data: categories } = getCategoriesTree();
 
   return (
     <div className='p-5 shadow-md rounded-md'>
@@ -26,8 +26,22 @@ const CategoryWidget = () => {
             {
               categories.map( cat => {
                 return (
-                  <li className="text-sm hover:text-indigo-600" key={cat.id}>
-                    <Link href={`/categories/${cat.id}`}><a>{cat.name}</a></Link>
+                  <li key={cat.id}>
+                    <Link href={`/categories/${cat.id}`}><a className="text-sm hover:text-[#ee4e23]">{cat.name}</a></Link>
+                    {
+                      <ul className='space-y-3 ml-3 mt-3'>
+                        {
+                          cat.children?.map( c => {
+                            return (
+                              <li key={c.id}>
+                                <Link href={`/categories/${c.id}`}><a className="text-sm hover:text-[#ee4e23]">{c.name}</a></Link>
+                              </li>
+                            );
+                            
+                          } )
+                        }
+                      </ul>
+                    }
                   </li>
                 );
               } )

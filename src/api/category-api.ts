@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import api from '../lib/axios';
-import { Category } from '../types/Category';
-
+import { Category, CategoryTree } from '../types/Category';
+import ArrayToTree from 'array-to-tree';
 
 export function getCategories ()  {
   const fetcher = async (queryKey: [string]) => {
@@ -14,5 +14,24 @@ export function getCategories ()  {
   return useQuery<Category[], Error>({
     queryKey: ['products/categories'],
     queryFn: ( { queryKey } ) => fetcher(queryKey as [string])
+  });
+}
+
+export function getCategoriesTree ()  {
+  const fetcher = async (queryKey: [string]) => {
+    const [url] = queryKey;
+    const response = await api.get(url);
+
+    return response.data;
+  };
+
+  return useQuery<Category[], Error, CategoryTree[]>({
+    queryKey: ['products/categories'],
+    queryFn: ( { queryKey } ) => fetcher(queryKey as [string]),
+    select: (data: Category[]) => {
+      return ArrayToTree(data, {
+        parentProperty: 'parent',
+      }) as CategoryTree[]
+    },
   });
 }
