@@ -6,8 +6,8 @@ import ProductLoader from '../../src/components/shared/ProductLoader';
 
 const ProductCategory = () => {
   const { query } = useRouter();
-  const { isLoading: isProductLoading, data: products } = useProductByCategory(query.catId);
-  const { isLoading: isCategoryLoading, data: category } = useCategoryById(query.catId);
+  const { isLoading: isProductLoading, data: products } = useProductByCategory(query.catId as string);
+  const { isLoading: isCategoryLoading, data: category } = useCategoryById(query.catId as string);
 
   return (
     <div className='py-20'>

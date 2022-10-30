@@ -24,21 +24,17 @@ export function getProducts(queryParamas) {
   });
 }
 
-export function getProduct(id) {
+export function getProduct(id: string) {
 
-  const fetcher = async (queryKey) => {
-
-    if( queryKey[1] != '' ) {
-      const response = await api.get(`${queryKey[0]}/${queryKey[1]}`);
-
+  const fetcher = async (queryKey: [string, string]) => {
+      const [url,id] = queryKey;
+      const response = await api.get(`${url}/${id}`);
       return response.data;
-    }
-        
   };
 
-  return useQuery({
+  return useQuery<Product, Error>({
     queryKey: ['products',id],
-    queryFn: ( { queryKey } ) => fetcher(queryKey)
+    queryFn: ( { queryKey } ) => fetcher(queryKey as [string, string])
   });
 }
 

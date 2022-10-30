@@ -5,3 +5,7 @@
 ins {
     @apply no-underline;
 }
+
+.gallery-image-nav .slick-current img {
+    @apply !border-solid !border-2 !border-[#9cb9c8];
+}
