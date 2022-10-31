@@ -5,6 +5,8 @@ export type Product = {
     images: ProductImage[];
     price_html: string;
     add_to_cart: AddToCart;
+    review_count: number;
+    average_rating: string;
 }
 
 export type ProductImage = {
