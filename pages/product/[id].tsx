@@ -10,13 +10,16 @@ const SingleProduct = () => {
   const {id} = router.query;
 
   const {isLoading, error, data: product } = getProduct(id as string);
+  const shortDescriptionElement =  document.createElement('div');
+  shortDescriptionElement.innerHTML = product.short_description;
+  const shortDescription = shortDescriptionElement.textContent || shortDescriptionElement.innerText || '';
 
   if( error ) {
     return (
       <div className='py-20'>
         <p>{error.message}</p>
       </div>
-    )
+    );
   }
 
   return (
@@ -28,10 +31,11 @@ const SingleProduct = () => {
         <div className='col-start-6 col-end-12'>
           {
             isLoading ?  (
-                <>
-                  <div className='animate-pulse mb-8'><div className='w-96 h-8 bg-gray-200'></div></div>
-                  <div className='animate-pulse mb-8'><div className='w-96 h-8 bg-gray-200'></div></div>
-                </> 
+              <>
+                <div className='animate-pulse mb-8'><div className='w-96 h-8 bg-gray-200'></div></div>
+                <div className='animate-pulse mb-8'><div className='w-96 h-8 bg-gray-200'></div></div>
+                <div className='animate-pulse mb-8'><div className='w-96 h-8 bg-gray-200'></div></div>
+              </> 
             ) : (
               <>
                 <h2 className='text-black text-4xl font-light mb-8'>{product.name}</h2>
@@ -39,6 +43,7 @@ const SingleProduct = () => {
                   <Rating count={product.average_rating} />
                   <span className='inline-block ml-2'>({ product.review_count } { product.review_count > 1 ? 'reviews' : 'review' })</span>
                 </div>
+                <p className='mt-8 text-base text-[#676767]'>{shortDescription}</p>
               </>
             ) 
           }

@@ -27,9 +27,9 @@ export function getProducts(queryParamas) {
 export function getProduct(id: string) {
 
   const fetcher = async (queryKey: [string, string]) => {
-      const [url,id] = queryKey;
-      const response = await api.get(`${url}/${id}`);
-      return response.data;
+    const [url,id] = queryKey;
+    const response = await api.get(`${url}/${id}`);
+    return response.data;
   };
 
   return useQuery<Product, Error>({
@@ -49,9 +49,9 @@ export function useProductByCategory(id: string) {
     });
 
     return response.data;
-  }
+  };
   return useQuery<Product[], Error>({
     queryKey: ['products',id],
     queryFn: ({ queryKey }) => fetcher(queryKey as [string, string])
-  })
+  });
 }

@@ -1,3 +1,5 @@
+import React from 'react';
+
 export type Product = {
     id: number;
     name: string;
@@ -7,6 +9,7 @@ export type Product = {
     add_to_cart: AddToCart;
     review_count: number;
     average_rating: string;
+    short_description: string
 }
 
 export type ProductImage = {
