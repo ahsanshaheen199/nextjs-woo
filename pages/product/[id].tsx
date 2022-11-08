@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { getProduct } from '../../src/api/product-api';
 import ImageGallery from '../../src/components/singleProduct/ImageGallery';
 import ImageGalleryLoader from '../../src/components/singleProduct/ImageGalleryLoader';
@@ -10,9 +10,20 @@ const SingleProduct = () => {
   const {id} = router.query;
 
   const {isLoading, error, data: product } = getProduct(id as string);
-  const shortDescriptionElement =  document.createElement('div');
-  shortDescriptionElement.innerHTML = product.short_description;
-  const shortDescription = shortDescriptionElement.textContent || shortDescriptionElement.innerText || '';
+  
+  let shortDescription: string;
+  let shortDescriptionElement;
+
+  useEffect(() => {
+    if( !isLoading ) {
+      shortDescriptionElement = document.createElement('div');
+      shortDescriptionElement.innerHTML = product?.short_description;
+      shortDescriptionElement.textContent || shortDescriptionElement.innerText || '';
+  
+    }
+    
+  }, [isLoading]);
+  
 
   if( error ) {
     return (
@@ -35,6 +46,7 @@ const SingleProduct = () => {
                 <div className='animate-pulse mb-8'><div className='w-96 h-8 bg-gray-200'></div></div>
                 <div className='animate-pulse mb-8'><div className='w-96 h-8 bg-gray-200'></div></div>
                 <div className='animate-pulse mb-8'><div className='w-96 h-8 bg-gray-200'></div></div>
+                <div className='animate-pulse mb-8'><div className='w-96 h-8 bg-gray-200'></div></div>
               </> 
             ) : (
               <>
@@ -44,6 +56,7 @@ const SingleProduct = () => {
                   <span className='inline-block ml-2'>({ product.review_count } { product.review_count > 1 ? 'reviews' : 'review' })</span>
                 </div>
                 <p className='mt-8 text-base text-[#676767]'>{shortDescription}</p>
+                <button className='text-xs text-white px-10 py-3 rounded-full bg-[#689418]'>Add to cart</button>
               </>
             ) 
           }
