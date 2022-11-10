@@ -1,20 +1,24 @@
-import WooCommerceRestApi from "@woocommerce/woocommerce-rest-api";
-import Categories from "../components/Categories";
-import SectionTitle from "../components/SectionTitle";
-import Products from "../components/Products";
+import WooCommerceRestApi from '@woocommerce/woocommerce-rest-api';
+import SectionTitle from '../src/components/SectionTitle';
+import Products from '../src/components/ProductList';
+import CategoryLoader from '../src/components/CategoryLoader';
+import CategoriList from '../src/components/CategoryList';
 
-export default function Home( { latestProducts, categories, topRatedProducts, onSaleProducts } ) {
+export default function Home( { latestProducts, topRatedProducts, onSaleProducts } ) {
+
   return (
-      <>
-        <Categories categories={categories} />
-        <SectionTitle title={'Recent Products'} />
-        <Products products={latestProducts} />
-        <SectionTitle title={'Top Rated Products'} />
-        <Products products={topRatedProducts} />
-        <SectionTitle title={'On Sale Products'} />
-        <Products products={onSaleProducts} />
-      </>
-  )
+    <>
+      <CategoriList />
+      
+      <SectionTitle title={'Recent Products'} />
+      <Products products={latestProducts} />
+
+      <SectionTitle title={'Top Rated Products'} />
+      <Products products={topRatedProducts} />
+      <SectionTitle title={'On Sale Products'} />
+      <Products products={onSaleProducts} />
+    </>
+  );
 }
 
 
@@ -24,13 +28,10 @@ export async function getStaticProps( context ) {
     url: process.env.NEXT_PUBLIC_WORDPRESS_SITE_URL,
     consumerKey: process.env.WC_CONSUMER_KEY,
     consumerSecret: process.env.WC_CONSUMER_SECRET,
-    version: "wc/v3"
+    version: 'wc/v3'
   });
 
   try {
-    // categories
-    const categoriesResponse = await api.get('products/categories',{ per_page: 3 });
-    const categories = categoriesResponse.data;
 
     //latest products
     const latestProductsResponse = await api.get('products',{ per_page: 6 });
@@ -51,7 +52,7 @@ export async function getStaticProps( context ) {
         onSaleProducts: onSaleProducts,
         categories: categories
       }
-    }
+    };
   } catch (error) {
     return {
       props: {
@@ -59,6 +60,6 @@ export async function getStaticProps( context ) {
         topRatedProducts: [],
         categories: []
       }
-    }
+    };
   }
 }
