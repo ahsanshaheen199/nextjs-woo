@@ -55,3 +55,26 @@ export function useProductByCategory(id: string) {
     queryFn: ({ queryKey }) => fetcher(queryKey as [string, string])
   });
 }
+
+
+export function useRelatedProducts(categoryId: string) {
+  const fetcher = async (queryKey: [string,string]) => {
+    const [_, id] = queryKey;
+
+    const response = await api.get('products', {
+      params: {
+        category: id,
+        per_page: 4
+      }
+    });
+  
+    return response.data;
+  }
+
+  
+
+  return useQuery({
+    queryKey: ['related-products', categoryId],
+    queryFn: ({ queryKey }) => fetcher(queryKey as [string,string])
+  });
+}

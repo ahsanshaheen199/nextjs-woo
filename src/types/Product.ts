@@ -9,7 +9,13 @@ export type Product = {
     add_to_cart: AddToCart;
     review_count: number;
     average_rating: string;
-    short_description: string
+    short_description: string;
+    categories: [{
+        id: string;
+        name: string;
+        slug: string;
+        link: string;
+    }]
 }
 
 export type ProductImage = {

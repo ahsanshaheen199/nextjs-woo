@@ -1,15 +1,12 @@
-import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 import { getProduct } from '../../src/api/product-api';
-import ImageGallery from '../../src/components/singleProduct/ImageGallery';
-import ImageGalleryLoader from '../../src/components/singleProduct/ImageGalleryLoader';
-import Rating from '../../src/components/singleProduct/Rating';
-
-const SingleProduct = () => {
-  const router = useRouter();
-  const {id} = router.query;
-
-  const {isLoading, error, data: product } = getProduct(id as string);
+import RelatedProducts from '../../src/components/partials/RelatedProducts';
+import ProductLoader from '../../src/components/shared/ProductLoader';
+import ImageGallery from '../../src/components/SingleProduct/ImageGallery';
+import ImageGalleryLoader from '../../src/components/SingleProduct/ImageGalleryLoader';
+import Rating from '../../src/components/SingleProduct/Rating';
+const SingleProduct = ({productId}) => {
+  const {isLoading, error, data: product } = getProduct(productId as string);
   
   let shortDescription: string;
   let shortDescriptionElement;
@@ -19,7 +16,6 @@ const SingleProduct = () => {
       shortDescriptionElement = document.createElement('div');
       shortDescriptionElement.innerHTML = product?.short_description;
       shortDescriptionElement.textContent || shortDescriptionElement.innerText || '';
-  
     }
     
   }, [isLoading]);
@@ -65,9 +61,25 @@ const SingleProduct = () => {
 
       <div className='pt-20'>
         <h3 className='text-center text-black font-light text-3xl'>Relative Products</h3>
+        {
+          isLoading ? ( <div className="grid lg:grid-cols-4 md:grid-cols-2 gap-4 mt-20">
+              <ProductLoader count={4} />
+          </div> ) : product.categories.length > 0 ? <RelatedProducts categoryId={product.categories[0].id} /> : <h2>No related products found</h2>
+        }
       </div>
     </div>
   );
 };
 
 export default SingleProduct;
+
+export async function getServerSideProps(context) {
+
+  const { params } = context;
+  
+  return {
+    props: {
+      productId: params.id
+    }
+  }
+}
