@@ -11,14 +11,14 @@ const Rating = ({ count }: RatingProps) => {
       <div className="flex space-x-0.5">
         <>
           {
-            Array.from( { length: Math.ceil(parseFloat(count)) }, ( v, i ) => {
+            Array.from( { length: Math.ceil(parseFloat(count)) }, ( _, i ) => {
               return (
                 <div key={i+1} className="text-[#ee4e23]"><FaStar /></div>
               );
             }  )
           }
           {
-            Array.from( { length: ( 5 - parseFloat(count) ) }, ( v, i ) => {
+            Array.from( { length: ( 5 - parseFloat(count) ) }, ( _, i ) => {
               return (
                 <>
                   <div key={i+1} className="text-[#9dafb7]"><FaStar /></div>
