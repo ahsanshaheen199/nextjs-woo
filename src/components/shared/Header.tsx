@@ -2,9 +2,11 @@ import { useContext, useState } from 'react';
 import Link from 'next/link';
 import { FaAlignJustify, FaFacebookF, FaInstagram, FaLinkedin, FaShoppingCart, FaTwitter, FaUserAlt } from 'react-icons/fa';
 import MobileMenu from './MobileMenu';
+import { useAppSelector } from '../../hooks/store';
 
 const Header = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
+  const cartItemCount = useAppSelector( state => state.cart.lineItems.reduce( (acc, item ) => acc + item.quantity ,0 ) );
 
   return (
     <header>
@@ -39,7 +41,7 @@ const Header = () => {
             <Link href="/cart">
               <a className='p-3 cursor-pointer inline-flex items-center bg-[#f4f7f8] rounded-full relative'>
                 <FaShoppingCart />
-                <span className='absolute top-1/2 -left-2 w-5 h-5 bg-[#ee4e23] text-white inline-flex justify-center items-center rounded-full'>0</span>
+                <span className='absolute top-1/2 -left-2 w-5 h-5 bg-[#ee4e23] text-white inline-flex justify-center items-center rounded-full'>{cartItemCount}</span>
               </a>
             </Link>
           </div>

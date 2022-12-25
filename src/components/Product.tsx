@@ -1,45 +1,23 @@
-import React, { MouseEvent, useEffect, useState } from 'react';
+import React, { FunctionComponent, MouseEvent, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Product } from '../types/Product';
-import api from '../lib/axios';
+import { useAppDispatch } from '../hooks/store';
+import { incrementCart } from '../store/cart/cart-slice';
 
 type ProductProps = {
   product: Product
 }
 
-const Product = ({ product }: ProductProps) => {
-
-  const [cartQty,setCartQty] = useState(0);
-
+const Product: FunctionComponent<ProductProps> = ({ product }: ProductProps) => {
+  const dispatch = useAppDispatch();
   const [isButtonLoading, setIsButtonLoading] = useState<boolean>(false);
 
-  const addToCart = async ( event: MouseEvent, product: Product ) => {
+  const addToCart = ( event: MouseEvent, product: Product ) => {
     event.preventDefault();
     setIsButtonLoading(true);
-
-    try {
-      const cartResponse = await api.get('cart');
-      const nonce = cartResponse?.headers?.nonce ?? null;
-      if( nonce ) {
-        const response = await api.post('cart/add-item',{
-          id: product.id,
-          quantity: 1
-        }, {
-          headers:{
-            Nonce: nonce
-          }
-        });
-
-        dispatch( { type: 'INCREMENT_CART', payload: response.data.items } );
-
-        setIsButtonLoading(false);
-      } else {
-        setIsButtonLoading(false);
-      }
-    } catch( error ) {
-      setIsButtonLoading(false);
-    }
+    dispatch(incrementCart(product));
+    setIsButtonLoading(false);
   };
 
   return (
