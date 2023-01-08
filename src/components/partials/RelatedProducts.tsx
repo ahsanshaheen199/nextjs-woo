@@ -4,11 +4,12 @@ import Product from '../Product';
 import ProductLoader from '../shared/ProductLoader';
 
 type RelatedProductsProps = {
-    categoryId: string
+    categoryId: string;
+    excludeProduct: string;
 }
 
-const RelatedProducts = ({categoryId}: RelatedProductsProps) => {
-  const {isLoading, error, data: products } = useRelatedProducts(categoryId);
+const RelatedProducts = ({categoryId,excludeProduct}: RelatedProductsProps) => {
+  const {isLoading, error, data: products } = useRelatedProducts(categoryId,excludeProduct);
 
   if( isLoading ) {
     return (

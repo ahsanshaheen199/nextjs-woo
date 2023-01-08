@@ -2,9 +2,9 @@ import React, { useEffect } from 'react';
 import { getProduct } from '../../src/api/product-api';
 import RelatedProducts from '../../src/components/partials/RelatedProducts';
 import ProductLoader from '../../src/components/shared/ProductLoader';
-import ImageGallery from '../../src/components/SingleProduct/ImageGallery';
-import ImageGalleryLoader from '../../src/components/SingleProduct/ImageGalleryLoader';
-import Rating from '../../src/components/SingleProduct/Rating';
+import ImageGallery from '../../src/components/partials/SingleProduct/ImageGallery';
+import ImageGalleryLoader from '../../src/components/partials/SingleProduct/ImageGalleryLoader';
+import Rating from '../../src/components/partials/SingleProduct/Rating';
 const SingleProduct = ({productId}) => {
   const {isLoading, error, data: product } = getProduct(productId as string);
   
@@ -63,8 +63,8 @@ const SingleProduct = ({productId}) => {
         <h3 className='text-center text-black font-light text-3xl'>Relative Products</h3>
         {
           isLoading ? ( <div className="grid lg:grid-cols-4 md:grid-cols-2 gap-4 mt-20">
-              <ProductLoader count={4} />
-          </div> ) : product.categories.length > 0 ? <RelatedProducts categoryId={product.categories[0].id} /> : <h2>No related products found</h2>
+            <ProductLoader count={4} />
+          </div> ) : product.categories.length > 0 ? <RelatedProducts categoryId={product.categories[0].id} excludeProduct={productId} /> : <h2>No related products found</h2>
         }
       </div>
     </div>
@@ -81,5 +81,5 @@ export async function getServerSideProps(context) {
     props: {
       productId: params.id
     }
-  }
+  };
 }

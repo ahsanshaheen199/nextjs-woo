@@ -57,24 +57,23 @@ export function useProductByCategory(id: string) {
 }
 
 
-export function useRelatedProducts(categoryId: string) {
-  const fetcher = async (queryKey: [string,string]) => {
-    const [_, id] = queryKey;
+export function useRelatedProducts(categoryId: string, excludeProduct: string) {
+  const fetcher = async (queryKey: [string,string,string]) => {
+    const [_, id, excludeProduct] = queryKey;
 
     const response = await api.get('products', {
       params: {
         category: id,
-        per_page: 4
+        per_page: 4,
+        exclude: [excludeProduct]
       }
     });
   
     return response.data;
-  }
-
-  
+  };
 
   return useQuery({
-    queryKey: ['related-products', categoryId],
-    queryFn: ({ queryKey }) => fetcher(queryKey as [string,string])
+    queryKey: ['related-products', categoryId, excludeProduct],
+    queryFn: ({ queryKey }) => fetcher(queryKey as [string,string,string])
   });
 }
