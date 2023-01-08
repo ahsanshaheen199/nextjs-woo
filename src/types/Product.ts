@@ -15,7 +15,14 @@ export type Product = {
         name: string;
         slug: string;
         link: string;
-    }]
+    }],
+    prices: {
+        price: string;
+        regular_price: string;
+        sale_price: string;
+        currency_code: string;
+        currency_symbol: string;
+    }
 }
 
 export type ProductImage = {
