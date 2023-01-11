@@ -9,6 +9,7 @@ import { useEffect } from 'react';
 import api from '../src/lib/axios';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { addNonce } from '../src/store/global/global-slice';
+import { Toaster } from 'react-hot-toast';
 
 function MyApp({ Component, pageProps }: AppProps  ) {
 
@@ -31,6 +32,7 @@ function MyApp({ Component, pageProps }: AppProps  ) {
         <Layout>
           <Component {...pageProps} />
         </Layout>
+        <Toaster />
         <ReactQueryDevtools />
       </QueryClientProvider>
     </Provider>

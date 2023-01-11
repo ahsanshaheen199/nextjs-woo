@@ -5,6 +5,7 @@ import { Product } from '../types/Product';
 import { useAppDispatch, useAppSelector } from '../hooks/store';
 // import { incrementCart } from '../store/cart/cart-slice';
 import { incrementCartItem } from '../store/cart/cart-actions';
+import { toast } from 'react-hot-toast';
 
 type ProductProps = {
   product: Product
@@ -17,8 +18,14 @@ const Product: FunctionComponent<ProductProps> = ({ product }: ProductProps) => 
   const addToCart = ( event: MouseEvent, product: Product ) => {
     event.preventDefault();
     setIsButtonLoading(true);
-    dispatch(incrementCartItem({productId: product.id, quantity: 1}));
-    setIsButtonLoading(false);
+    dispatch(incrementCartItem({productId: product.id, quantity: 1}))
+      .then( response => {
+        if( response.meta.requestStatus === 'fulfilled' ) {
+          toast.success(`${product.name} added successfully`);
+          setIsButtonLoading(false);
+        }
+      } );
+    
   };
 
   return (
@@ -75,7 +82,7 @@ const Product: FunctionComponent<ProductProps> = ({ product }: ProductProps) => 
         {
           product.type === 'external' && <a onClick={(event) => addToCart(event,product)} className={'px-4 py-2 bg-[#E5E7EB] text-black inline-block mt-3 rounded cursor-pointer'}>{product?.button_text ?? 'Buy product'}</a>
         } */}
-        <button disabled={isButtonLoading} onClick={(event) => addToCart(event,product)} className='px-4 py-2 bg-[#E5E7EB] text-black inline-block mt-3 rounded cursor-pointer'>
+        <button disabled={isButtonLoading} onClick={(event) => addToCart(event,product)} className='px-4 py-2 bg-[#E5E7EB] text-black inline-block mt-3 rounded cursor-pointer disabled:cursor-not-allowed disabled:bg-opacity-20'>
           {
             isButtonLoading && (
               <svg aria-hidden="true" role="status" className="inline mr-2 w-4 h-4 text-gray-200 animate-spin dark:text-gray-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -84,7 +91,7 @@ const Product: FunctionComponent<ProductProps> = ({ product }: ProductProps) => 
               </svg>
             )
           }
-          {product.add_to_cart.text}
+          { isButtonLoading ? 'Adding..' : product.add_to_cart.text}
         </button>
 
       </div>
