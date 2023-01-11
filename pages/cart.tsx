@@ -6,7 +6,7 @@ import { useMemo } from 'react';
 import MinusIcon from '../src/components/partials/cart/MinusIcon';
 import PlusIcon from '../src/components/partials/cart/PlusIcon';
 import { useAppDispatch, useAppSelector } from '../src/hooks/store';
-import { incrementCartItem } from '../src/store/cart/cart-actions';
+import { decrementCartItem, incrementCartItem } from '../src/store/cart/cart-actions';
 
 const Cart : NextPage = () => {
   const dispatch = useAppDispatch();
@@ -53,12 +53,16 @@ const Cart : NextPage = () => {
                       return (
                         <tr className='border-b border-[#e5eef2]' key={item.id}>
                           <td className='py-7 block sm:table-cell'>
-                            <Image src={image} alt={item.name} width={165} height={165} />
+                            <Link href={`/product/${item.id}`}>
+                              <a>
+                                <Image src={image} alt={item.name} width={165} height={165} />
+                              </a>
+                            </Link>
                           </td>
                           <td className='py-7 block sm:table-cell text-base font-light text-black'>{item.name}</td>
                           <td className='py-7 block sm:table-cell text-base font-light text-black'>
                             <div className='inline-flex bg-[#f4f7f8] rounded-full py-3 w-[170px] justify-between'>
-                              <button className='px-4 font-medium text-black text-base'>
+                              <button className='px-4 font-medium text-black text-base' onClick={ () => dispatch( decrementCartItem({ productId: item.id, quantity: 1 }) ) }>
                                 <MinusIcon className='w-5 h-5' />
                               </button>
                               <span className='px-4 font-medium text-black text-base'>{item.quantity}</span>

@@ -1,8 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Product, ProductImage } from '../../types/Product';
-import { incrementCartItem } from './cart-actions';
+import { decrementCartItem, incrementCartItem } from './cart-actions';
 
-// type LineItem = Product & { quantity: number };
 type LineItem = {
   key: string;
   name: string;
@@ -36,39 +35,24 @@ export const cartSlice = createSlice({
   name: 'cart',
   initialState: initialCartState,
   reducers: {
-    // incrementCart: (state: CartState, action: PayloadAction<Product>) => {
-    //   const found = state.lineItems.find( item => item.id === action.payload.id );
-
-    //   if( found ) {
-    //     state.lineItems = state.lineItems.map( item => {
-    //       return item.id === action.payload.id ?  { ...item, quantity: item.quantity + 1 } : item;
-    //     } );
-    //   } else {
-    //     state.lineItems.push({ quantity: 1, ...action.payload});
-    //   }
-    // },
-    // decrementCart: (state: CartState, action: PayloadAction<Product>) => {
-    //   const found = state.lineItems.find( item => item.id === action.payload.id );
-
-    //   if( found ) {
-    //     const foundItemsQuantity = found.quantity;
-    //     if( foundItemsQuantity === 1 ) {
-    //       state.lineItems = state.lineItems.filter( item => item.id !== found.id );
-    //     } else {
-    //       state.lineItems = state.lineItems.map( item => {
-    //         return item.id === action.payload.id ?  { ...item, quantity: item.quantity - 1 } : item;
-    //       } );
-    //     }
-    //   }
-    // }
   },
   extraReducers: ( builder ) => {
-    builder.addCase(incrementCartItem.fulfilled, (state,action) => {
+    builder.addCase(incrementCartItem.fulfilled, (state: CartState ,action: PayloadAction<LineItem>) => {
       const found = state.lineItems.find( item => item.id === action.payload.id );
       if( found ) {
         state.lineItems = state.lineItems.map( item => item.id === action.payload.id ? action.payload: item );
       } else {
         state.lineItems.push(action.payload);
+      }
+    } );
+    builder.addCase(decrementCartItem.fulfilled, ( state: CartState, action: PayloadAction<number> ) => {
+      const found = state.lineItems.find( item => item.id === action.payload );
+      if( found.quantity === 1 ) {
+        state.lineItems = state.lineItems.filter( item => item.id !== action.payload );
+      }
+
+      if( found.quantity > 1 ) {
+        state.lineItems = state.lineItems.map( item => item.id === action.payload ? { ...item, quantity: item.quantity - 1 } : item );
       }
     } );
   }
