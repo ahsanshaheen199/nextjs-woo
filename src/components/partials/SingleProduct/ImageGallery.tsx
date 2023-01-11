@@ -30,8 +30,8 @@ const ImageGallery = ({images}: { images: ProductImage[] }) => {
   };
 
   useEffect( () => {
-    setNavOneSlider(sliderOne.current)
-    setNavTwoSlider(sliderTwo.current)
+    setNavOneSlider(sliderOne.current);
+    setNavTwoSlider(sliderTwo.current);
   }, [] );
 
   return (
@@ -44,7 +44,7 @@ const ImageGallery = ({images}: { images: ProductImage[] }) => {
                 images.map( img => {
                   return (
                     <div key={img.id}>
-                      <Image src={img.src} width={600} height={600} />
+                      <Image src={img.src} width={600} height={600} alt={'Gallery Image'} />
                     </div>
                   );
                 } )
@@ -55,7 +55,7 @@ const ImageGallery = ({images}: { images: ProductImage[] }) => {
                 images.map( img => {
                   return (
                     <div className='px-0.5 cursor-pointer' key={img.id}>
-                      <Image src={img.src} width={150} height={150} />
+                      <Image src={img.src} width={150} height={150}  alt={'Gallery Image'} />
                     </div>
                   );
                 } )

@@ -2,8 +2,9 @@ import React, { FunctionComponent, MouseEvent, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Product } from '../types/Product';
-import { useAppDispatch } from '../hooks/store';
-import { incrementCart } from '../store/cart/cart-slice';
+import { useAppDispatch, useAppSelector } from '../hooks/store';
+// import { incrementCart } from '../store/cart/cart-slice';
+import { incrementCartItem } from '../store/cart/cart-actions';
 
 type ProductProps = {
   product: Product
@@ -16,7 +17,7 @@ const Product: FunctionComponent<ProductProps> = ({ product }: ProductProps) => 
   const addToCart = ( event: MouseEvent, product: Product ) => {
     event.preventDefault();
     setIsButtonLoading(true);
-    dispatch(incrementCart(product));
+    dispatch(incrementCartItem({productId: product.id, quantity: 1}));
     setIsButtonLoading(false);
   };
 

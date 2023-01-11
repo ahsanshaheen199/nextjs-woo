@@ -6,13 +6,12 @@ import { useMemo } from 'react';
 import MinusIcon from '../src/components/partials/cart/MinusIcon';
 import PlusIcon from '../src/components/partials/cart/PlusIcon';
 import { useAppDispatch, useAppSelector } from '../src/hooks/store';
-import { decrementCart, incrementCart } from '../src/store/cart/cart-slice';
+import { incrementCartItem } from '../src/store/cart/cart-actions';
 
 const Cart : NextPage = () => {
   const dispatch = useAppDispatch();
   const lineItems = useAppSelector( state => state.cart.lineItems );
-
-  const total = useMemo( () => lineItems?.length > 0  ? lineItems.reduce( (acc, item) => acc + ( item.prices.sale_price ? Number(item.prices.sale_price) * item.quantity : Number(item.prices.regular_price) * item.quantity ) / 100, 0) : 0 , [lineItems] );
+  const total = useMemo( () => lineItems?.length > 0  ? lineItems.reduce( (acc, item) => acc + Number(item.totals.line_total), 0 ) : 0 , [lineItems] );
   
   return (
     <>
@@ -50,7 +49,7 @@ const Cart : NextPage = () => {
                 <tbody>
                   {
                     lineItems.map( item => {
-                      const image = item.images.length > 0 ? item.images[0].src : '/placeholder.png';
+                      const image = item.images?.length > 0 ? item.images[0].src : '/placeholder.png';
                       return (
                         <tr className='border-b border-[#e5eef2]' key={item.id}>
                           <td className='py-7 block sm:table-cell'>
@@ -59,11 +58,11 @@ const Cart : NextPage = () => {
                           <td className='py-7 block sm:table-cell text-base font-light text-black'>{item.name}</td>
                           <td className='py-7 block sm:table-cell text-base font-light text-black'>
                             <div className='inline-flex bg-[#f4f7f8] rounded-full py-3 w-[170px] justify-between'>
-                              <button className='px-4 font-medium text-black text-base' onClick={ () => dispatch(decrementCart(item)) }>
+                              <button className='px-4 font-medium text-black text-base'>
                                 <MinusIcon className='w-5 h-5' />
                               </button>
                               <span className='px-4 font-medium text-black text-base'>{item.quantity}</span>
-                              <button className='px-4 font-medium text-black text-base' onClick={() => dispatch(incrementCart(item))}>
+                              <button className='px-4 font-medium text-black text-base' onClick={ () => dispatch( incrementCartItem({ productId: item.id, quantity: 1 }) ) }>
                                 <PlusIcon className='w-5 h-5' />
                               </button>
                             </div>
@@ -83,14 +82,14 @@ const Cart : NextPage = () => {
                     <td className='py-7'></td>
                     <td className='py-7'></td>
                     <td className='py-7 text-base font-medium text-black border-b border-[#e5eef2]'>Sub-Total:</td>
-                    <td className='py-7 text-base font-light text-black border-b border-[#e5eef2]'>${total}</td>
+                    <td className='py-7 text-base font-light text-black border-b border-[#e5eef2]'>${total / 100}</td>
                   </tr>
                   <tr>
                     <td className='py-7'></td>
                     <td className='py-7'></td>
                     <td className='py-7'></td>
                     <td className='py-7 text-base font-medium text-black border-b border-[#e5eef2]'>Total:</td>
-                    <td className='py-7 text-base font-light text-black border-b border-[#e5eef2]'>${total}</td>
+                    <td className='py-7 text-base font-light text-black border-b border-[#e5eef2]'>${total / 100}</td>
                   </tr>
                 </tfoot>
               </table>

@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
 import cartReducer from './cart/cart-slice';
+import globalReducer from './global/global-slice';
 
 export const store = configureStore({
   reducer: {
-    cart: cartReducer   
+    cart: cartReducer,
+    global: globalReducer
   }
 });
 
