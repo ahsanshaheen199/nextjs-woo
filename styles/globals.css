@@ -2,10 +2,23 @@
 @tailwind components;
 @tailwind utilities;
 
+
+
+@layer base {
+    body {
+        @apply font-montserrat;
+    }
+}
+
 ins {
     @apply no-underline;
 }
 
 .gallery-image-nav .slick-current img {
     @apply !border-solid !border-2 !border-[#9cb9c8];
+}
+
+.next-woo-select input:focus {
+    @apply focus:ring-0 focus:border-[#5993c0];
+    box-shadow: none;
 }
