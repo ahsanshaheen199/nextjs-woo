@@ -4,29 +4,25 @@ import Product from '../Product';
 import ProductLoader from '../shared/ProductLoader';
 
 type RelatedProductsProps = {
-    categoryId: string;
-    excludeProduct: string;
-}
+  categoryId: string;
+  excludeProduct: string;
+};
 
-const RelatedProducts = ({categoryId,excludeProduct}: RelatedProductsProps) => {
-  const {isLoading, error, data: products } = useRelatedProducts(categoryId,excludeProduct);
+const RelatedProducts = ({ categoryId, excludeProduct }: RelatedProductsProps) => {
+  const { isLoading, error, data: products } = useRelatedProducts(categoryId, excludeProduct);
 
-  if( isLoading ) {
+  if (isLoading) {
     return (
-      <div className="grid lg:grid-cols-4 md:grid-cols-2 gap-4 mt-20">
+      <div className="mt-20 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <ProductLoader count={4} />
       </div>
     );
   }
   return (
-    <div className="grid lg:grid-cols-4 md:grid-cols-2 gap-4 mt-20">
-      {
-        products?.map( product => {
-          return (
-            <Product key={product.id} product={product} />
-          );
-        } )
-      }
+    <div className="mt-20 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+      {products?.map((product) => {
+        return <Product key={product.id} product={product} />;
+      })}
     </div>
   );
 };

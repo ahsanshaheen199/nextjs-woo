@@ -1,23 +1,18 @@
-import { Dialog, Transition } from '@headlessui/react'
-import React, { Fragment, useState } from 'react'
+import { Dialog, Transition } from '@headlessui/react';
+import React, { Fragment, useState } from 'react';
 
 const MobileMenu = () => {
+  const [isOpen, setIsOpen] = useState(true);
 
-    const [isOpen, setIsOpen] = useState(true)
+  function closeModal() {
+    setIsOpen(false);
+  }
 
-    function closeModal() {
-      setIsOpen(false)
-    }
-    
-    function openModal() {
-      setIsOpen(true)
-    }
+  function openModal() {
+    setIsOpen(true);
+  }
 
-  return (
-    <>
-        
-    </>
-  )
-}
+  return <></>;
+};
 
 export default MobileMenu;

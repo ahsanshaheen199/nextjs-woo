@@ -4,12 +4,11 @@ import Products from '../src/components/ProductList';
 import CategoryLoader from '../src/components/CategoryLoader';
 import CategoriList from '../src/components/CategoryList';
 
-export default function Home( { latestProducts, topRatedProducts, onSaleProducts } ) {
-
+export default function Home({ latestProducts, topRatedProducts, onSaleProducts }) {
   return (
     <>
       <CategoriList />
-      
+
       {/* <SectionTitle title={'Recent Products'} />
       <Products products={latestProducts} />
 
@@ -20,7 +19,6 @@ export default function Home( { latestProducts, topRatedProducts, onSaleProducts
     </>
   );
 }
-
 
 // export async function getStaticProps( context ) {
 

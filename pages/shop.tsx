@@ -2,7 +2,6 @@ import Head from 'next/head';
 import ProductList from '../src/components/ProductList';
 import CategoryWidget from '../src/components/shop/CategoryWidget';
 
-
 const Shop = () => {
   return (
     <>
@@ -10,7 +9,7 @@ const Shop = () => {
         <title>Nextjs Woo | Shop</title>
       </Head>
       <div className="py-20">
-        <div className='lg:gap-4 gap-6 grid lg:grid-cols-4'>
+        <div className="grid gap-6 lg:grid-cols-4 lg:gap-4">
           <div>
             <CategoryWidget />
           </div>

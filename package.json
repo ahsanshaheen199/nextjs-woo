@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "fmt": "npx prettier --config .prettierrc.js src/**/*.tsx src/**/*.ts pages/**/*.tsx --write"
   },
   "dependencies": {
     "@headlessui/react": "^1.7.3",

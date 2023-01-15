@@ -4,39 +4,34 @@ import Link from 'next/link';
 import { Category } from '../types/Category';
 
 type CategoryProps = {
-  category: Category
-}
+  category: Category;
+};
 
 const Category = (props: CategoryProps) => {
   const { category } = props;
   return (
     <Link href={`/categories/${category.id}`}>
       <a className={'group'}>
-        <div
-          className="w-full rounded-lg overflow-hidden">
-          {
-            category.image ? (
-              <Image
-                className="object-center object-cover group-hover:opacity-75"
-                src={category.image.src}
-                alt={category.name}
-                width={500}
-                height={500}
-              />
-            )
-              :
-              (
-                <Image
-                  src={`/placeholder.png`}
-                  alt={category.name}
-                  className="w-full h-full object-center object-cover group-hover:opacity-75"
-                  width={500}
-                  height={500}
-                />
-              )
-          }
+        <div className="w-full overflow-hidden rounded-lg">
+          {category.image ? (
+            <Image
+              className="object-cover object-center group-hover:opacity-75"
+              src={category.image.src}
+              alt={category.name}
+              width={500}
+              height={500}
+            />
+          ) : (
+            <Image
+              src={`/placeholder.png`}
+              alt={category.name}
+              className="h-full w-full object-cover object-center group-hover:opacity-75"
+              width={500}
+              height={500}
+            />
+          )}
         </div>
-        <h3 className="mt-4 text-sm text-gray-700 text-center">{`${category.name}  (${category.count})`}</h3>
+        <h3 className="mt-4 text-center text-sm text-gray-700">{`${category.name}  (${category.count})`}</h3>
       </a>
     </Link>
   );

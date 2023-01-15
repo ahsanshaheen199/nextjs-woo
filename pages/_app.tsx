@@ -11,20 +11,17 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { addNonce } from '../src/store/global/global-slice';
 import { Toaster } from 'react-hot-toast';
 
-function MyApp({ Component, pageProps }: AppProps  ) {
-
+function MyApp({ Component, pageProps }: AppProps) {
   const globalState = store.getState().global;
-  
+
   useEffect(() => {
-    if( ! globalState.nonce ) {
-      api.get('v1/cart/items')
-        .then( response => {
-          const nonce = response.headers.nonce;
-          store.dispatch(addNonce(nonce));
-        });
+    if (!globalState.nonce) {
+      api.get('v1/cart/items').then((response) => {
+        const nonce = response.headers.nonce;
+        store.dispatch(addNonce(nonce));
+      });
     }
   }, [globalState]);
-  
 
   return (
     <Provider store={store}>
