@@ -1,7 +1,7 @@
 import React, { ChangeEvent, FunctionComponent, useMemo } from 'react';
 import { CheckpoutData } from '../../../types/Checkout';
 import Select, { StylesConfig } from 'react-select';
-import courtiesWithStates from '../../../../data/countries-with-states.json';
+import courtiesWithStates from '../../../data/countries-with-states.json';
 
 type Props = {
   checkoutData: CheckpoutData;
@@ -25,7 +25,7 @@ const BillingForm: FunctionComponent<Props> = ({ checkoutData, setCheckoutData }
   );
 
   const billingStates = useMemo(() => {
-    const foundCountry = courtiesWithStates.find((country) => country.code === checkoutData.billing.billingCountry);
+    const foundCountry = courtiesWithStates.find((country) => country.code === checkoutData.billing.country);
     if (foundCountry) {
       return foundCountry.states.map((state) => {
         return {
@@ -36,7 +36,7 @@ const BillingForm: FunctionComponent<Props> = ({ checkoutData, setCheckoutData }
     } else {
       return [];
     }
-  }, [checkoutData.billing.billingCountry]);
+  }, [checkoutData.billing.country]);
 
   const colourStyles: StylesConfig = {
     control: (styles) => ({
@@ -64,9 +64,9 @@ const BillingForm: FunctionComponent<Props> = ({ checkoutData, setCheckoutData }
           <input
             className="h-12 w-full rounded-[27.5px] border border-[#bfcdd2] px-6 outline-none focus:border-[#5993c0] focus:ring-0"
             type="text"
-            name="billingFirstName"
+            name="firstName"
             id="billingFirstName"
-            value={checkoutData.billing.billingFirstName}
+            value={checkoutData.billing.firstName}
             onChange={handleCheckoutBillingFormData}
           />
         </div>
@@ -77,9 +77,9 @@ const BillingForm: FunctionComponent<Props> = ({ checkoutData, setCheckoutData }
           <input
             className="h-12 w-full rounded-[27.5px] border border-[#bfcdd2] px-6 outline-none focus:border-[#5993c0] focus:ring-0"
             type="text"
-            name="billingLastName"
+            name="lastName"
             id="billingLastName"
-            value={checkoutData.billing.billingLastName}
+            value={checkoutData.billing.lastName}
             onChange={handleCheckoutBillingFormData}
           />
         </div>
@@ -92,9 +92,9 @@ const BillingForm: FunctionComponent<Props> = ({ checkoutData, setCheckoutData }
         <input
           className="h-12 w-full rounded-[27.5px] border border-[#bfcdd2] px-6 outline-none focus:border-[#5993c0] focus:ring-0"
           type="text"
-          name="billingEmail"
+          name="email"
           id="billingEmail"
-          value={checkoutData.billing.billingEmail}
+          value={checkoutData.billing.email}
           onChange={handleCheckoutBillingFormData}
         />
       </div>
@@ -112,12 +112,12 @@ const BillingForm: FunctionComponent<Props> = ({ checkoutData, setCheckoutData }
               ...checkoutData,
               billing: {
                 ...checkoutData.billing,
-                billingState: '',
-                billingCountry: newValue?.value || '',
+                state: '',
+                country: newValue?.value || '',
               },
             });
           }}
-          value={countries.find((country) => country.value === checkoutData.billing.billingCountry)}
+          value={countries.find((country) => country.value === checkoutData.billing.country)}
         />
       </div>
 
@@ -128,9 +128,9 @@ const BillingForm: FunctionComponent<Props> = ({ checkoutData, setCheckoutData }
         <input
           className="h-12 w-full rounded-[27.5px] border border-[#bfcdd2] px-6 outline-none focus:border-[#5993c0] focus:ring-0"
           type="text"
-          name="billingAddress"
+          name="address"
           id="billingAddress"
-          value={checkoutData.billing.billingAddress}
+          value={checkoutData.billing.address}
           onChange={handleCheckoutBillingFormData}
         />
       </div>
@@ -149,11 +149,11 @@ const BillingForm: FunctionComponent<Props> = ({ checkoutData, setCheckoutData }
                 ...checkoutData,
                 billing: {
                   ...checkoutData.billing,
-                  billingState: newValue?.value || '',
+                  state: newValue?.value || '',
                 },
               });
             }}
-            value={billingStates.find((country) => country.value === checkoutData.billing.billingState)}
+            value={billingStates.find((country) => country.value === checkoutData.billing.state)}
           />
         </div>
         <div className="mb-5">
@@ -163,9 +163,9 @@ const BillingForm: FunctionComponent<Props> = ({ checkoutData, setCheckoutData }
           <input
             className="h-12 w-full rounded-[27.5px] border border-[#bfcdd2] px-6 outline-none focus:border-[#5993c0] focus:ring-0"
             type="text"
-            name="billingCity"
+            name="city"
             id="billingCity"
-            value={checkoutData.billing.billingCity}
+            value={checkoutData.billing.city}
             onChange={handleCheckoutBillingFormData}
           />
         </div>
@@ -178,9 +178,9 @@ const BillingForm: FunctionComponent<Props> = ({ checkoutData, setCheckoutData }
         <input
           className="h-12 w-full rounded-[27.5px] border border-[#bfcdd2] px-6 outline-none focus:border-[#5993c0] focus:ring-0"
           type="text"
-          name="billingZip"
+          name="zip"
           id="billingZip"
-          value={checkoutData.billing.billingZip}
+          value={checkoutData.billing.zip}
           onChange={handleCheckoutBillingFormData}
         />
       </div>
@@ -192,9 +192,9 @@ const BillingForm: FunctionComponent<Props> = ({ checkoutData, setCheckoutData }
         <input
           className="h-12 w-full rounded-[27.5px] border border-[#bfcdd2] px-6 outline-none focus:border-[#5993c0] focus:ring-0"
           type="text"
-          name="billingPhone"
+          name="phone"
           id="billingPhone"
-          value={checkoutData.billing.billingPhone}
+          value={checkoutData.billing.phone}
           onChange={handleCheckoutBillingFormData}
         />
       </div>

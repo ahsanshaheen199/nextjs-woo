@@ -1,7 +1,7 @@
 import React, { ChangeEvent, FunctionComponent, useMemo } from 'react';
 import { CheckpoutData } from '../../../types/Checkout';
 import Select, { StylesConfig } from 'react-select';
-import courtiesWithStates from '../../../../data/countries-with-states.json';
+import courtiesWithStates from '../../../data/countries-with-states.json';
 
 type Props = {
   checkoutData: CheckpoutData;
@@ -25,7 +25,7 @@ const ShippingForm: FunctionComponent<Props> = ({ checkoutData, setCheckoutData 
   );
 
   const shippingStates = useMemo(() => {
-    const foundCountry = courtiesWithStates.find((country) => country.code === checkoutData.shipping.shippingCountry);
+    const foundCountry = courtiesWithStates.find((country) => country.code === checkoutData.shipping.country);
     if (foundCountry) {
       return foundCountry.states.map((state) => {
         return {
@@ -36,7 +36,7 @@ const ShippingForm: FunctionComponent<Props> = ({ checkoutData, setCheckoutData 
     } else {
       return [];
     }
-  }, [checkoutData.shipping.shippingCountry]);
+  }, [checkoutData.shipping.country]);
 
   const colourStyles: StylesConfig = {
     control: (styles) => ({
@@ -64,9 +64,9 @@ const ShippingForm: FunctionComponent<Props> = ({ checkoutData, setCheckoutData 
           <input
             className="h-12 w-full rounded-[27.5px] border border-[#bfcdd2] px-6 outline-none focus:border-[#5993c0] focus:ring-0"
             type="text"
-            name="shippingFirstName"
+            name="firstName"
             id="shippingFirstName"
-            value={checkoutData.shipping.shippingFirstName}
+            value={checkoutData.shipping.firstName}
             onChange={handleCheckoutShippingFormData}
           />
         </div>
@@ -77,9 +77,9 @@ const ShippingForm: FunctionComponent<Props> = ({ checkoutData, setCheckoutData 
           <input
             className="h-12 w-full rounded-[27.5px] border border-[#bfcdd2] px-6 outline-none focus:border-[#5993c0] focus:ring-0"
             type="text"
-            name="shippingLastName"
+            name="lastName"
             id="shippingLastName"
-            value={checkoutData.shipping.shippingLastName}
+            value={checkoutData.shipping.lastName}
             onChange={handleCheckoutShippingFormData}
           />
         </div>
@@ -92,9 +92,9 @@ const ShippingForm: FunctionComponent<Props> = ({ checkoutData, setCheckoutData 
         <input
           className="h-12 w-full rounded-[27.5px] border border-[#bfcdd2] px-6 outline-none focus:border-[#5993c0] focus:ring-0"
           type="text"
-          name="shippingEmail"
+          name="email"
           id="shippingEmail"
-          value={checkoutData.shipping.shippingEmail}
+          value={checkoutData.shipping.email}
           onChange={handleCheckoutShippingFormData}
         />
       </div>
@@ -112,12 +112,12 @@ const ShippingForm: FunctionComponent<Props> = ({ checkoutData, setCheckoutData 
               ...checkoutData,
               shipping: {
                 ...checkoutData.shipping,
-                shippingState: '',
-                shippingCountry: newValue?.value || '',
+                state: '',
+                country: newValue?.value || '',
               },
             });
           }}
-          value={countries.find((country) => country.value === checkoutData.shipping.shippingCountry)}
+          value={countries.find((country) => country.value === checkoutData.shipping.country)}
         />
       </div>
 
@@ -128,9 +128,9 @@ const ShippingForm: FunctionComponent<Props> = ({ checkoutData, setCheckoutData 
         <input
           className="h-12 w-full rounded-[27.5px] border border-[#bfcdd2] px-6 outline-none focus:border-[#5993c0] focus:ring-0"
           type="text"
-          name="shippingAddress"
+          name="address"
           id="shippingAddress"
-          value={checkoutData.shipping.shippingAddress}
+          value={checkoutData.shipping.address}
           onChange={handleCheckoutShippingFormData}
         />
       </div>
@@ -149,11 +149,11 @@ const ShippingForm: FunctionComponent<Props> = ({ checkoutData, setCheckoutData 
                 ...checkoutData,
                 shipping: {
                   ...checkoutData.shipping,
-                  shippingState: newValue?.value || '',
+                  state: newValue?.value || '',
                 },
               });
             }}
-            value={shippingStates.find((country) => country.value === checkoutData.shipping.shippingState)}
+            value={shippingStates.find((country) => country.value === checkoutData.shipping.state)}
           />
         </div>
         <div className="mb-5">
@@ -163,9 +163,9 @@ const ShippingForm: FunctionComponent<Props> = ({ checkoutData, setCheckoutData 
           <input
             className="h-12 w-full rounded-[27.5px] border border-[#bfcdd2] px-6 outline-none focus:border-[#5993c0] focus:ring-0"
             type="text"
-            name="shippingCity"
+            name="city"
             id="shippingCity"
-            value={checkoutData.shipping.shippingCity}
+            value={checkoutData.shipping.city}
             onChange={handleCheckoutShippingFormData}
           />
         </div>
@@ -178,9 +178,9 @@ const ShippingForm: FunctionComponent<Props> = ({ checkoutData, setCheckoutData 
         <input
           className="h-12 w-full rounded-[27.5px] border border-[#bfcdd2] px-6 outline-none focus:border-[#5993c0] focus:ring-0"
           type="text"
-          name="shippingZip"
+          name="zip"
           id="shippingZip"
-          value={checkoutData.shipping.shippingZip}
+          value={checkoutData.shipping.zip}
           onChange={handleCheckoutShippingFormData}
         />
       </div>
@@ -192,9 +192,9 @@ const ShippingForm: FunctionComponent<Props> = ({ checkoutData, setCheckoutData 
         <input
           className="h-12 w-full rounded-[27.5px] border border-[#bfcdd2] px-6 outline-none focus:border-[#5993c0] focus:ring-0"
           type="text"
-          name="shippingPhone"
+          name="phone"
           id="shippingPhone"
-          value={checkoutData.shipping.shippingPhone}
+          value={checkoutData.shipping.phone}
           onChange={handleCheckoutShippingFormData}
         />
       </div>
