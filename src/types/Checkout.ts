@@ -2,24 +2,24 @@ export type CheckpoutData = {
   isShippingDifferent: boolean;
   orderNote: string;
   billing: {
-    firstName: string;
-    lastName: string;
+    first_name: string;
+    last_name: string;
     email: string;
-    address: string;
+    address_1: string;
     country: string;
     city: string;
-    zip: string;
+    postcode: string;
     phone: string;
     state: string;
   };
   shipping: {
-    firstName: string;
-    lastName: string;
+    first_name: string;
+    last_name: string;
     email: string;
-    address: string;
+    address_1: string;
     country: string;
     city: string;
-    zip: string;
+    postcode: string;
     phone: string;
     state: string;
   };

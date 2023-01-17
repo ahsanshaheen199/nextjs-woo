@@ -64,28 +64,28 @@ const ShippingForm: FunctionComponent<Props> = ({ checkoutData, setCheckoutData,
             First Name <span className="text-[#f1634c]">*</span>
           </label>
           <input
-            className={`h-12 w-full rounded-[27.5px] border border-[#bfcdd2] px-6 outline-none focus:border-[#5993c0] focus:ring-0 ${shippingFormError?.firstName ? 'border-red-600 text-red-600' : ''}`}
+            className={`h-12 w-full rounded-[27.5px] border border-[#bfcdd2] px-6 outline-none focus:border-[#5993c0] focus:ring-0 ${shippingFormError?.first_name ? 'border-red-600 text-red-600' : ''}`}
             type="text"
-            name="firstName"
+            name="first_name"
             id="shippingFirstName"
-            value={checkoutData.shipping.firstName}
+            value={checkoutData.shipping.first_name}
             onChange={handleCheckoutShippingFormData}
           />
-          {shippingFormError?.firstName && <p className='text-xs text-red-600'>{shippingFormError.firstName}</p> }
+          {shippingFormError?.first_name && <p className='text-xs text-red-600'>{shippingFormError.first_name}</p> }
         </div>
         <div className="mb-5">
           <label className="mb-2 block text-sm font-light" htmlFor="shippingLastName">
             Last Name <span className="text-[#f1634c]">*</span>
           </label>
           <input
-            className={`h-12 w-full rounded-[27.5px] border border-[#bfcdd2] px-6 outline-none focus:border-[#5993c0] focus:ring-0 ${shippingFormError?.lastName ? 'border-red-600 text-red-600' : ''}`}
+            className={`h-12 w-full rounded-[27.5px] border border-[#bfcdd2] px-6 outline-none focus:border-[#5993c0] focus:ring-0 ${shippingFormError?.last_name ? 'border-red-600 text-red-600' : ''}`}
             type="text"
-            name="lastName"
+            name="last_name"
             id="shippingLastName"
-            value={checkoutData.shipping.lastName}
+            value={checkoutData.shipping.last_name}
             onChange={handleCheckoutShippingFormData}
           />
-          {shippingFormError?.lastName && <p className='text-xs text-red-600'>{shippingFormError.lastName}</p> }
+          {shippingFormError?.last_name && <p className='text-xs text-red-600'>{shippingFormError.last_name}</p> }
         </div>
       </div>
 
@@ -134,9 +134,9 @@ const ShippingForm: FunctionComponent<Props> = ({ checkoutData, setCheckoutData,
         <input
           className={`h-12 w-full rounded-[27.5px] border border-[#bfcdd2] px-6 outline-none focus:border-[#5993c0] focus:ring-0 ${shippingFormError?.address ? 'border-red-600 text-red-600' : ''}`}
           type="text"
-          name="address"
+          name="address_1"
           id="shippingAddress"
-          value={checkoutData.shipping.address}
+          value={checkoutData.shipping.address_1}
           onChange={handleCheckoutShippingFormData}
         />
         {shippingFormError?.address && <p className='text-xs text-red-600'>{shippingFormError.address}</p> }
@@ -185,14 +185,14 @@ const ShippingForm: FunctionComponent<Props> = ({ checkoutData, setCheckoutData,
           Zip <span className="text-[#f1634c]">*</span>
         </label>
         <input
-          className={`h-12 w-full rounded-[27.5px] border border-[#bfcdd2] px-6 outline-none focus:border-[#5993c0] focus:ring-0 ${shippingFormError?.zip ? 'border-red-600 text-red-600' : ''}`}
+          className={`h-12 w-full rounded-[27.5px] border border-[#bfcdd2] px-6 outline-none focus:border-[#5993c0] focus:ring-0 ${shippingFormError?.postcode ? 'border-red-600 text-red-600' : ''}`}
           type="text"
-          name="zip"
+          name="postcode"
           id="shippingZip"
-          value={checkoutData.shipping.zip}
+          value={checkoutData.shipping.postcode}
           onChange={handleCheckoutShippingFormData}
         />
-        {shippingFormError?.zip && <p className='text-xs text-red-600'>{shippingFormError.zip}</p> }
+        {shippingFormError?.postcode && <p className='text-xs text-red-600'>{shippingFormError.postcode}</p> }
       </div>
 
       <div className="mb-5">

@@ -63,28 +63,28 @@ const BillingForm: FunctionComponent<Props> = ({ checkoutData, setCheckoutData, 
             First Name <span className="text-[#f1634c]">*</span>
           </label>
           <input
-            className={`h-12 w-full rounded-[27.5px] border border-[#bfcdd2] px-6 outline-none focus:border-[#5993c0] focus:ring-0 ${billingFormError?.firstName ? 'border-red-600 text-red-600' : ''}`}
+            className={`h-12 w-full rounded-[27.5px] border border-[#bfcdd2] px-6 outline-none focus:border-[#5993c0] focus:ring-0 ${billingFormError?.first_name ? 'border-red-600 text-red-600' : ''}`}
             type="text"
-            name="firstName"
+            name="first_name"
             id="billingFirstName"
-            value={checkoutData.billing.firstName}
+            value={checkoutData.billing.first_name}
             onChange={handleCheckoutBillingFormData}
           />
-          {billingFormError?.firstName && <p className='text-xs text-red-600'>{billingFormError.firstName}</p> }
+          {billingFormError?.first_name && <p className='text-xs text-red-600'>{billingFormError.first_name}</p> }
         </div>
         <div className="mb-5">
           <label className="mb-2 block text-sm font-light" htmlFor="billingLastName">
             Last Name <span className="text-[#f1634c]">*</span>
           </label>
           <input
-            className={`h-12 w-full rounded-[27.5px] border border-[#bfcdd2] px-6 outline-none focus:border-[#5993c0] focus:ring-0 ${billingFormError?.lastName ? 'border-red-600 text-red-600' : ''}`}
+            className={`h-12 w-full rounded-[27.5px] border border-[#bfcdd2] px-6 outline-none focus:border-[#5993c0] focus:ring-0 ${billingFormError?.last_name ? 'border-red-600 text-red-600' : ''}`}
             type="text"
-            name="lastName"
+            name="last_name"
             id="billingLastName"
-            value={checkoutData.billing.lastName}
+            value={checkoutData.billing.last_name}
             onChange={handleCheckoutBillingFormData}
           />
-          {billingFormError?.lastName && <p className='text-xs text-red-600'>{billingFormError.lastName}</p> }
+          {billingFormError?.last_name && <p className='text-xs text-red-600'>{billingFormError.last_name}</p> }
         </div>
       </div>
 
@@ -133,9 +133,9 @@ const BillingForm: FunctionComponent<Props> = ({ checkoutData, setCheckoutData, 
         <input
           className={`h-12 w-full rounded-[27.5px] border border-[#bfcdd2] px-6 outline-none focus:border-[#5993c0] focus:ring-0 ${billingFormError?.address ? 'border-red-600 text-red-600' : ''}`}
           type="text"
-          name="address"
+          name="address_1"
           id="billingAddress"
-          value={checkoutData.billing.address}
+          value={checkoutData.billing.address_1}
           onChange={handleCheckoutBillingFormData}
         />
         {billingFormError?.address && <p className='text-xs text-red-600'>{billingFormError.address}</p> }
@@ -184,14 +184,14 @@ const BillingForm: FunctionComponent<Props> = ({ checkoutData, setCheckoutData, 
           Zip <span className="text-[#f1634c]">*</span>
         </label>
         <input
-          className={`h-12 w-full rounded-[27.5px] border border-[#bfcdd2] px-6 outline-none focus:border-[#5993c0] focus:ring-0 ${billingFormError?.zip ? 'border-red-600 text-red-600' : ''}`}
+          className={`h-12 w-full rounded-[27.5px] border border-[#bfcdd2] px-6 outline-none focus:border-[#5993c0] focus:ring-0 ${billingFormError?.postcode ? 'border-red-600 text-red-600' : ''}`}
           type="text"
-          name="zip"
+          name="postcode"
           id="billingZip"
-          value={checkoutData.billing.zip}
+          value={checkoutData.billing.postcode}
           onChange={handleCheckoutBillingFormData}
         />
-        {billingFormError?.zip && <p className='text-xs text-red-600'>{billingFormError.zip}</p> }
+        {billingFormError?.postcode && <p className='text-xs text-red-600'>{billingFormError.postcode}</p> }
       </div>
 
       <div className="mb-5">

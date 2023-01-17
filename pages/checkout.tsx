@@ -11,42 +11,46 @@ import WooCommerceRestApi from '@woocommerce/woocommerce-rest-api';
 import { isEmpty } from 'lodash';
 import axios from 'axios';
 import { useValidator } from '../src/hooks/use-validator';
+import { useRouter } from 'next/router';
+import { toast } from 'react-hot-toast';
 
 type Props = {
   payment_gateways: {id: string; title: string; description: string; enabled: boolean;}[]
 }
 
 const Checkout: NextPage = ({payment_gateways}: Props) => {
+  const router = useRouter();
   const lineItems = useAppSelector((state) => state.cart.lineItems);
   const [checkoutData, setCheckoutData] = useState<CheckpoutData>({
     isShippingDifferent: false,
     orderNote: '',
     billing: {
-      firstName: '',
-      lastName: '',
+      first_name: '',
+      last_name: '',
       email: '',
-      address: '',
+      address_1: '',
       country: '',
       city: '',
-      zip: '',
+      postcode: '',
       phone: '',
       state: '',
     },
     shipping: {
-      firstName: '',
-      lastName: '',
+      first_name: '',
+      last_name: '',
       email: '',
-      address: '',
+      address_1: '',
       country: '',
       city: '',
-      zip: '',
+      postcode: '',
       phone: '',
       state: '',
     },
     payment_method: ''
   });
-  const [billingFormError, setBillingFormError] = useState({} as CheckoutDataError);
-  const [shippingFormError, setShippingFormError] = useState({} as CheckoutDataError);
+  const [billingFormError, setBillingFormError] = useState<CheckoutDataError>({} as CheckoutDataError);
+  const [shippingFormError, setShippingFormError] = useState<CheckoutDataError>({} as CheckoutDataError);
+  const [isButtonLoading, setisButtonLoading] = useState<boolean>(false);
 
   const total = useMemo(
     () => (lineItems?.length > 0 ? lineItems.reduce((acc, item) => acc + Number(item.totals.line_total), 0) : 0),
@@ -58,15 +62,16 @@ const Checkout: NextPage = ({payment_gateways}: Props) => {
   const placeAnOrder = async () => {
     setBillingFormError({});
     setShippingFormError({});
+    setisButtonLoading(true);
 
     const rules = {
-      firstName: 'required|string',
-      lastName: 'required|string',
+      first_name: 'required|string',
+      last_name: 'required|string',
       email: 'required|email',
-      address: 'required|string',
+      address_1: 'required|string',
       country: 'required|string',
       city: 'required|string',
-      zip: 'required|string',
+      postcode: 'required|string',
       phone: 'string',
       state: 'required|string'
     };
@@ -95,10 +100,18 @@ const Checkout: NextPage = ({payment_gateways}: Props) => {
         payment_method: checkoutData.payment_method,
         billing: checkoutData.billing,
         shipping: checkoutData.isShippingDifferent ? checkoutData.shipping : checkoutData.billing,
-        lineItems: lineItems.map( item => ( { product_id: item.id, quantity: item.quantity } ) )
+        line_items: lineItems.map( item => ( { product_id: item.id, quantity: item.quantity } ) )
       };
 
-      const response = await axios.post('/api/order', payload);
+      try {
+        const response = await axios.post('/api/order', payload);
+        setisButtonLoading(false);
+        router.push(`/order-received/${response.data.orderId}`);
+      } catch( error ) {
+        setisButtonLoading(false);
+        toast.error(`${error.response.data.message}`);
+      }
+      
     }
   };
 
@@ -230,7 +243,7 @@ const Checkout: NextPage = ({payment_gateways}: Props) => {
               <div className='mt-12'>
                 <button
                   onClick={placeAnOrder}
-                  disabled={isEmpty(checkoutData.payment_method) === true} 
+                  disabled={isEmpty(checkoutData.payment_method) === true || isButtonLoading} 
                   className='disabled:bg-opacity-30 disabled:cursor-not-allowed inline-block rounded-full bg-[#558fba] px-12 py-6 text-xs font-bold text-white'>
                     Place Order
                 </button>
