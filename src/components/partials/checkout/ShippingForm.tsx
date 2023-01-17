@@ -1,14 +1,16 @@
 import React, { ChangeEvent, FunctionComponent, useMemo } from 'react';
-import { CheckpoutData } from '../../../types/Checkout';
+import { CheckoutDataError, CheckpoutData } from '../../../types/Checkout';
 import Select, { StylesConfig } from 'react-select';
 import courtiesWithStates from '../../../data/countries-with-states.json';
 
 type Props = {
   checkoutData: CheckpoutData;
   setCheckoutData: React.Dispatch<React.SetStateAction<CheckpoutData>>;
+  shippingFormError: CheckoutDataError;
 };
 
-const ShippingForm: FunctionComponent<Props> = ({ checkoutData, setCheckoutData }: Props) => {
+const ShippingForm: FunctionComponent<Props> = ({ checkoutData, setCheckoutData, shippingFormError }: Props) => {
+  
   const handleCheckoutShippingFormData = (event: ChangeEvent<HTMLInputElement>) => {
     setCheckoutData({
       ...checkoutData,
@@ -62,26 +64,28 @@ const ShippingForm: FunctionComponent<Props> = ({ checkoutData, setCheckoutData 
             First Name <span className="text-[#f1634c]">*</span>
           </label>
           <input
-            className="h-12 w-full rounded-[27.5px] border border-[#bfcdd2] px-6 outline-none focus:border-[#5993c0] focus:ring-0"
+            className={`h-12 w-full rounded-[27.5px] border border-[#bfcdd2] px-6 outline-none focus:border-[#5993c0] focus:ring-0 ${shippingFormError?.firstName ? 'border-red-600 text-red-600' : ''}`}
             type="text"
             name="firstName"
             id="shippingFirstName"
             value={checkoutData.shipping.firstName}
             onChange={handleCheckoutShippingFormData}
           />
+          {shippingFormError?.firstName && <p className='text-xs text-red-600'>{shippingFormError.firstName}</p> }
         </div>
         <div className="mb-5">
           <label className="mb-2 block text-sm font-light" htmlFor="shippingLastName">
             Last Name <span className="text-[#f1634c]">*</span>
           </label>
           <input
-            className="h-12 w-full rounded-[27.5px] border border-[#bfcdd2] px-6 outline-none focus:border-[#5993c0] focus:ring-0"
+            className={`h-12 w-full rounded-[27.5px] border border-[#bfcdd2] px-6 outline-none focus:border-[#5993c0] focus:ring-0 ${shippingFormError?.lastName ? 'border-red-600 text-red-600' : ''}`}
             type="text"
             name="lastName"
             id="shippingLastName"
             value={checkoutData.shipping.lastName}
             onChange={handleCheckoutShippingFormData}
           />
+          {shippingFormError?.lastName && <p className='text-xs text-red-600'>{shippingFormError.lastName}</p> }
         </div>
       </div>
 
@@ -90,13 +94,14 @@ const ShippingForm: FunctionComponent<Props> = ({ checkoutData, setCheckoutData 
           Email <span className="text-[#f1634c]">*</span>
         </label>
         <input
-          className="h-12 w-full rounded-[27.5px] border border-[#bfcdd2] px-6 outline-none focus:border-[#5993c0] focus:ring-0"
+          className={`h-12 w-full rounded-[27.5px] border border-[#bfcdd2] px-6 outline-none focus:border-[#5993c0] focus:ring-0 ${shippingFormError?.email ? 'border-red-600 text-red-600' : ''}`}
           type="text"
           name="email"
           id="shippingEmail"
           value={checkoutData.shipping.email}
           onChange={handleCheckoutShippingFormData}
         />
+        {shippingFormError?.email && <p className='text-xs text-red-600'>{shippingFormError.email}</p> }
       </div>
 
       <div className="mb-5">
@@ -119,6 +124,7 @@ const ShippingForm: FunctionComponent<Props> = ({ checkoutData, setCheckoutData 
           }}
           value={countries.find((country) => country.value === checkoutData.shipping.country)}
         />
+        {shippingFormError?.country && <p className='text-xs text-red-600'>{shippingFormError.country}</p> }
       </div>
 
       <div className="mb-5">
@@ -126,13 +132,14 @@ const ShippingForm: FunctionComponent<Props> = ({ checkoutData, setCheckoutData 
           Address <span className="text-[#f1634c]">*</span>
         </label>
         <input
-          className="h-12 w-full rounded-[27.5px] border border-[#bfcdd2] px-6 outline-none focus:border-[#5993c0] focus:ring-0"
+          className={`h-12 w-full rounded-[27.5px] border border-[#bfcdd2] px-6 outline-none focus:border-[#5993c0] focus:ring-0 ${shippingFormError?.address ? 'border-red-600 text-red-600' : ''}`}
           type="text"
           name="address"
           id="shippingAddress"
           value={checkoutData.shipping.address}
           onChange={handleCheckoutShippingFormData}
         />
+        {shippingFormError?.address && <p className='text-xs text-red-600'>{shippingFormError.address}</p> }
       </div>
 
       <div className="grid grid-cols-2 gap-6">
@@ -155,19 +162,21 @@ const ShippingForm: FunctionComponent<Props> = ({ checkoutData, setCheckoutData 
             }}
             value={shippingStates.find((country) => country.value === checkoutData.shipping.state)}
           />
+          {shippingFormError?.state && <p className='text-xs text-red-600'>{shippingFormError.state}</p> }
         </div>
         <div className="mb-5">
           <label className="mb-2 block text-sm font-light" htmlFor="shippingCity">
             City <span className="text-[#f1634c]">*</span>
           </label>
           <input
-            className="h-12 w-full rounded-[27.5px] border border-[#bfcdd2] px-6 outline-none focus:border-[#5993c0] focus:ring-0"
+            className={`h-12 w-full rounded-[27.5px] border border-[#bfcdd2] px-6 outline-none focus:border-[#5993c0] focus:ring-0 ${shippingFormError?.city ? 'border-red-600 text-red-600' : ''}`}
             type="text"
             name="city"
             id="shippingCity"
             value={checkoutData.shipping.city}
             onChange={handleCheckoutShippingFormData}
           />
+          {shippingFormError?.city && <p className='text-xs text-red-600'>{shippingFormError.city}</p> }
         </div>
       </div>
 
@@ -176,13 +185,14 @@ const ShippingForm: FunctionComponent<Props> = ({ checkoutData, setCheckoutData 
           Zip <span className="text-[#f1634c]">*</span>
         </label>
         <input
-          className="h-12 w-full rounded-[27.5px] border border-[#bfcdd2] px-6 outline-none focus:border-[#5993c0] focus:ring-0"
+          className={`h-12 w-full rounded-[27.5px] border border-[#bfcdd2] px-6 outline-none focus:border-[#5993c0] focus:ring-0 ${shippingFormError?.zip ? 'border-red-600 text-red-600' : ''}`}
           type="text"
           name="zip"
           id="shippingZip"
           value={checkoutData.shipping.zip}
           onChange={handleCheckoutShippingFormData}
         />
+        {shippingFormError?.zip && <p className='text-xs text-red-600'>{shippingFormError.zip}</p> }
       </div>
 
       <div className="mb-5">
@@ -190,13 +200,14 @@ const ShippingForm: FunctionComponent<Props> = ({ checkoutData, setCheckoutData 
           Phone
         </label>
         <input
-          className="h-12 w-full rounded-[27.5px] border border-[#bfcdd2] px-6 outline-none focus:border-[#5993c0] focus:ring-0"
+          className={`h-12 w-full rounded-[27.5px] border border-[#bfcdd2] px-6 outline-none focus:border-[#5993c0] focus:ring-0 ${shippingFormError?.phone ? 'border-red-600 text-red-600' : ''}`}
           type="text"
           name="phone"
           id="shippingPhone"
           value={checkoutData.shipping.phone}
           onChange={handleCheckoutShippingFormData}
         />
+        {shippingFormError?.phone && <p className='text-xs text-red-600'>{shippingFormError.phone}</p> }
       </div>
     </>
   );

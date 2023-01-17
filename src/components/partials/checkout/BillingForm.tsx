@@ -1,14 +1,15 @@
 import React, { ChangeEvent, FunctionComponent, useMemo } from 'react';
-import { CheckpoutData } from '../../../types/Checkout';
+import { CheckoutDataError, CheckpoutData } from '../../../types/Checkout';
 import Select, { StylesConfig } from 'react-select';
 import courtiesWithStates from '../../../data/countries-with-states.json';
 
 type Props = {
   checkoutData: CheckpoutData;
   setCheckoutData: React.Dispatch<React.SetStateAction<CheckpoutData>>;
+  billingFormError: CheckoutDataError;
 };
 
-const BillingForm: FunctionComponent<Props> = ({ checkoutData, setCheckoutData }: Props) => {
+const BillingForm: FunctionComponent<Props> = ({ checkoutData, setCheckoutData, billingFormError }: Props) => {
   const handleCheckoutBillingFormData = (event: ChangeEvent<HTMLInputElement>) => {
     setCheckoutData({
       ...checkoutData,
@@ -62,26 +63,28 @@ const BillingForm: FunctionComponent<Props> = ({ checkoutData, setCheckoutData }
             First Name <span className="text-[#f1634c]">*</span>
           </label>
           <input
-            className="h-12 w-full rounded-[27.5px] border border-[#bfcdd2] px-6 outline-none focus:border-[#5993c0] focus:ring-0"
+            className={`h-12 w-full rounded-[27.5px] border border-[#bfcdd2] px-6 outline-none focus:border-[#5993c0] focus:ring-0 ${billingFormError?.firstName ? 'border-red-600 text-red-600' : ''}`}
             type="text"
             name="firstName"
             id="billingFirstName"
             value={checkoutData.billing.firstName}
             onChange={handleCheckoutBillingFormData}
           />
+          {billingFormError?.firstName && <p className='text-xs text-red-600'>{billingFormError.firstName}</p> }
         </div>
         <div className="mb-5">
           <label className="mb-2 block text-sm font-light" htmlFor="billingLastName">
             Last Name <span className="text-[#f1634c]">*</span>
           </label>
           <input
-            className="h-12 w-full rounded-[27.5px] border border-[#bfcdd2] px-6 outline-none focus:border-[#5993c0] focus:ring-0"
+            className={`h-12 w-full rounded-[27.5px] border border-[#bfcdd2] px-6 outline-none focus:border-[#5993c0] focus:ring-0 ${billingFormError?.lastName ? 'border-red-600 text-red-600' : ''}`}
             type="text"
             name="lastName"
             id="billingLastName"
             value={checkoutData.billing.lastName}
             onChange={handleCheckoutBillingFormData}
           />
+          {billingFormError?.lastName && <p className='text-xs text-red-600'>{billingFormError.lastName}</p> }
         </div>
       </div>
 
@@ -90,13 +93,14 @@ const BillingForm: FunctionComponent<Props> = ({ checkoutData, setCheckoutData }
           Email <span className="text-[#f1634c]">*</span>
         </label>
         <input
-          className="h-12 w-full rounded-[27.5px] border border-[#bfcdd2] px-6 outline-none focus:border-[#5993c0] focus:ring-0"
+          className={`h-12 w-full rounded-[27.5px] border border-[#bfcdd2] px-6 outline-none focus:border-[#5993c0] focus:ring-0 ${billingFormError?.email ? 'border-red-600 text-red-600' : ''}`}
           type="text"
           name="email"
           id="billingEmail"
           value={checkoutData.billing.email}
           onChange={handleCheckoutBillingFormData}
         />
+        {billingFormError?.email && <p className='text-xs text-red-600'>{billingFormError.email}</p> }
       </div>
 
       <div className="mb-5">
@@ -119,6 +123,7 @@ const BillingForm: FunctionComponent<Props> = ({ checkoutData, setCheckoutData }
           }}
           value={countries.find((country) => country.value === checkoutData.billing.country)}
         />
+        {billingFormError?.country && <p className='text-xs text-red-600'>{billingFormError.country}</p> }
       </div>
 
       <div className="mb-5">
@@ -126,13 +131,14 @@ const BillingForm: FunctionComponent<Props> = ({ checkoutData, setCheckoutData }
           Address <span className="text-[#f1634c]">*</span>
         </label>
         <input
-          className="h-12 w-full rounded-[27.5px] border border-[#bfcdd2] px-6 outline-none focus:border-[#5993c0] focus:ring-0"
+          className={`h-12 w-full rounded-[27.5px] border border-[#bfcdd2] px-6 outline-none focus:border-[#5993c0] focus:ring-0 ${billingFormError?.address ? 'border-red-600 text-red-600' : ''}`}
           type="text"
           name="address"
           id="billingAddress"
           value={checkoutData.billing.address}
           onChange={handleCheckoutBillingFormData}
         />
+        {billingFormError?.address && <p className='text-xs text-red-600'>{billingFormError.address}</p> }
       </div>
 
       <div className="grid grid-cols-2 gap-6">
@@ -155,19 +161,21 @@ const BillingForm: FunctionComponent<Props> = ({ checkoutData, setCheckoutData }
             }}
             value={billingStates.find((country) => country.value === checkoutData.billing.state)}
           />
+          {billingFormError?.state && <p className='text-xs text-red-600'>{billingFormError.state}</p> }
         </div>
         <div className="mb-5">
           <label className="mb-2 block text-sm font-light" htmlFor="billingCity">
             City <span className="text-[#f1634c]">*</span>
           </label>
           <input
-            className="h-12 w-full rounded-[27.5px] border border-[#bfcdd2] px-6 outline-none focus:border-[#5993c0] focus:ring-0"
+            className={`h-12 w-full rounded-[27.5px] border border-[#bfcdd2] px-6 outline-none focus:border-[#5993c0] focus:ring-0 ${billingFormError?.city ? 'border-red-600 text-red-600' : ''}`}
             type="text"
             name="city"
             id="billingCity"
             value={checkoutData.billing.city}
             onChange={handleCheckoutBillingFormData}
           />
+          {billingFormError?.city && <p className='text-xs text-red-600'>{billingFormError.city}</p> }
         </div>
       </div>
 
@@ -176,13 +184,14 @@ const BillingForm: FunctionComponent<Props> = ({ checkoutData, setCheckoutData }
           Zip <span className="text-[#f1634c]">*</span>
         </label>
         <input
-          className="h-12 w-full rounded-[27.5px] border border-[#bfcdd2] px-6 outline-none focus:border-[#5993c0] focus:ring-0"
+          className={`h-12 w-full rounded-[27.5px] border border-[#bfcdd2] px-6 outline-none focus:border-[#5993c0] focus:ring-0 ${billingFormError?.zip ? 'border-red-600 text-red-600' : ''}`}
           type="text"
           name="zip"
           id="billingZip"
           value={checkoutData.billing.zip}
           onChange={handleCheckoutBillingFormData}
         />
+        {billingFormError?.zip && <p className='text-xs text-red-600'>{billingFormError.zip}</p> }
       </div>
 
       <div className="mb-5">
@@ -190,13 +199,14 @@ const BillingForm: FunctionComponent<Props> = ({ checkoutData, setCheckoutData }
           Phone
         </label>
         <input
-          className="h-12 w-full rounded-[27.5px] border border-[#bfcdd2] px-6 outline-none focus:border-[#5993c0] focus:ring-0"
+          className={`h-12 w-full rounded-[27.5px] border border-[#bfcdd2] px-6 outline-none focus:border-[#5993c0] focus:ring-0 ${billingFormError?.phone ? 'border-red-600 text-red-600' : ''}`}
           type="text"
           name="phone"
           id="billingPhone"
           value={checkoutData.billing.phone}
           onChange={handleCheckoutBillingFormData}
         />
+        {billingFormError?.phone && <p className='text-xs text-red-600'>{billingFormError.phone}</p> }
       </div>
     </>
   );

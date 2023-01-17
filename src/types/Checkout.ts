@@ -25,3 +25,8 @@ export type CheckpoutData = {
   };
   payment_method: string;
 };
+
+
+export type CheckoutDataError = {
+  [key: string]: string[]
+}

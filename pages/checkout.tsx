@@ -5,11 +5,12 @@ import React, { useMemo, useState } from 'react';
 import BillingForm from '../src/components/partials/checkout/BillingForm';
 import ShippingForm from '../src/components/partials/checkout/ShippingForm';
 import { useAppSelector } from '../src/hooks/store';
-import { CheckpoutData } from '../src/types/Checkout';
+import { CheckoutDataError, CheckpoutData } from '../src/types/Checkout';
 import Image from 'next/image';
 import WooCommerceRestApi from '@woocommerce/woocommerce-rest-api';
 import { isEmpty } from 'lodash';
 import axios from 'axios';
+import { useValidator } from '../src/hooks/use-validator';
 
 type Props = {
   payment_gateways: {id: string; title: string; description: string; enabled: boolean;}[]
@@ -44,31 +45,61 @@ const Checkout: NextPage = ({payment_gateways}: Props) => {
     },
     payment_method: ''
   });
+  const [billingFormError, setBillingFormError] = useState({} as CheckoutDataError);
+  const [shippingFormError, setShippingFormError] = useState({} as CheckoutDataError);
 
   const total = useMemo(
     () => (lineItems?.length > 0 ? lineItems.reduce((acc, item) => acc + Number(item.totals.line_total), 0) : 0),
     [lineItems]
   );
 
+  const { validate } = useValidator();
+
   const placeAnOrder = async () => {
+    setBillingFormError({});
+    setShippingFormError({});
 
-    if( lineItems.length === 0 ) {
-      return;
-    }
-
-    const shipping = checkoutData.isShippingDifferent ? checkoutData.shipping : checkoutData.billing;
-
-    const payload = {
-      payment_method: checkoutData.payment_method,
-      billing: {
-        ...checkoutData.billing
-      },
-      shipping: shipping,
-      lineItems: lineItems.map( item => ( { product_id: item.id, quantity: item.quantity } ) )
+    const rules = {
+      firstName: 'required|string',
+      lastName: 'required|string',
+      email: 'required|email',
+      address: 'required|string',
+      country: 'required|string',
+      city: 'required|string',
+      zip: 'required|string',
+      phone: 'string',
+      state: 'required|string'
     };
 
-    const response = await axios.post('/api/order', payload);
-    
+    const billingValidation = validate(checkoutData.billing,rules);
+
+    const shippingValidation = validate(checkoutData.shipping,rules);
+
+    if( billingValidation.fails() ) {
+      setBillingFormError(billingValidation.errors.errors);
+
+      if( checkoutData.isShippingDifferent ) {
+        if( shippingValidation.fails() ) {
+          setShippingFormError(shippingValidation.errors.errors);
+        }
+      }
+    } else {
+      if( checkoutData.isShippingDifferent ) {
+        if( billingValidation.fails() ) {
+          setShippingFormError(shippingValidation.errors.errors);
+          return;
+        }
+      }
+
+      const payload = {
+        payment_method: checkoutData.payment_method,
+        billing: checkoutData.billing,
+        shipping: checkoutData.isShippingDifferent ? checkoutData.shipping : checkoutData.billing,
+        lineItems: lineItems.map( item => ( { product_id: item.id, quantity: item.quantity } ) )
+      };
+
+      const response = await axios.post('/api/order', payload);
+    }
   };
 
   return (
@@ -100,7 +131,7 @@ const Checkout: NextPage = ({payment_gateways}: Props) => {
             <div>
               <h2 className="mb-5 text-[30px] font-light">Billing Details</h2>
 
-              <BillingForm checkoutData={checkoutData} setCheckoutData={setCheckoutData} />
+              <BillingForm checkoutData={checkoutData} setCheckoutData={setCheckoutData}  billingFormError={billingFormError} />
 
               <div className="mt-10 mb-10 flex items-center space-x-3">
                 <input
@@ -118,7 +149,7 @@ const Checkout: NextPage = ({payment_gateways}: Props) => {
 
               {checkoutData.isShippingDifferent && (
                 <div className="mb-10">
-                  <ShippingForm checkoutData={checkoutData} setCheckoutData={setCheckoutData} />
+                  <ShippingForm checkoutData={checkoutData} setCheckoutData={setCheckoutData} shippingFormError={shippingFormError} />
                 </div>
               )}
 
