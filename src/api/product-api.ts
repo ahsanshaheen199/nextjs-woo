@@ -1,4 +1,4 @@
-import { useQuery, UseQueryOptions } from '@tanstack/react-query';
+import { useQueries, useQuery, UseQueryOptions } from '@tanstack/react-query';
 import { AxiosResponse, AxiosResponseHeaders } from 'axios';
 import api from '../lib/axios';
 import { Product } from '../types/Product';
@@ -31,7 +31,7 @@ export function getProduct(id: string, queryConfig: Omit<UseQueryOptions<Product
   };
 
   return useQuery<Product, Error>({
-    queryKey: ['products', id],
+    queryKey: ['/products', id],
     queryFn: ({ queryKey }) => fetcher(queryKey as [string, string]),
     ...queryConfig,
   });
@@ -56,23 +56,16 @@ export function useProductByCategory(id: string, queryConfig: Omit<UseQueryOptio
   });
 }
 
-export function useRelatedProducts(categoryId: string, excludeProduct: string) {
-  const fetcher = async (queryKey: [string, string, string]) => {
-    const [_, id, excludeProduct] = queryKey;
+export function useRelatedProducts(ids: number[]) {
+  const fetcher = async (queryKey: [string, string]) => {
+    const [url, id] = queryKey;
 
-    const response = await api.get('products', {
-      params: {
-        category: id,
-        per_page: 4,
-        exclude: [excludeProduct],
-      },
-    });
+    const response = await api.get(`${url}/${id}`);
 
     return response.data;
   };
 
-  return useQuery({
-    queryKey: ['related-products', categoryId, excludeProduct],
-    queryFn: ({ queryKey }) => fetcher(queryKey as [string, string, string]),
-  });
+  return useQueries( {
+    queries: ids.map( id => ({ queryKey: ['/products', id], queryFn: ({ queryKey }) => fetcher(queryKey as [string, string]) }) )
+  } );
 }

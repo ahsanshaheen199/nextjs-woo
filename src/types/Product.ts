@@ -23,6 +23,9 @@ export type Product = {
     currency_code: string;
     currency_symbol: string;
   };
+  regular_price: string;
+  sale_price: string;
+  related_ids: number[];
 };
 
 export type ProductImage = {

@@ -1,82 +1,80 @@
-import React, { useEffect } from 'react';
-import { getProduct } from '../../src/api/product-api';
+import React, { useEffect, useState } from 'react';
 import RelatedProducts from '../../src/components/partials/RelatedProducts';
-import ProductLoader from '../../src/components/shared/ProductLoader';
 import ImageGallery from '../../src/components/partials/SingleProduct/ImageGallery';
-import ImageGalleryLoader from '../../src/components/partials/SingleProduct/ImageGalleryLoader';
-import Rating from '../../src/components/partials/SingleProduct/Rating';
-const SingleProduct = ({ productId }) => {
-  const { isLoading, error, data: product } = getProduct(productId as string , {
-    enabled: !! productId
-  });
+import WooCommerceRestApi from '@woocommerce/woocommerce-rest-api';
+import { NextPage } from 'next';
+import { Product } from '../../src/types/Product';
+import { isEmpty } from 'lodash';
+import PlusIcon from '../../src/components/partials/cart/PlusIcon';
+import MinusIcon from '../../src/components/partials/cart/MinusIcon';
+import { useAppDispatch } from '../../src/hooks/store';
+import { incrementCartItem } from '../../src/store/cart/cart-actions';
+import toast from 'react-hot-toast';
 
-  let shortDescription: string;
-  let shortDescriptionElement;
-
-  useEffect(() => {
-    if (!isLoading) {
-      shortDescriptionElement = document.createElement('div');
-      shortDescriptionElement.innerHTML = product?.short_description;
-      shortDescriptionElement.textContent || shortDescriptionElement.innerText || '';
+const SingleProduct: NextPage = ({ product }: { product: Product }) => {
+  // const { isLoading, error, data: product } = getProduct(productId as string , {
+  //   enabled: !! productId
+  // });
+  const dispatch = useAppDispatch();
+  const [isButtonLoading, setIsButtonLoading] = useState<boolean>(false);
+  const [quantity, setQuantity] = useState<number>(0);
+  const addToCart = () => {
+    setIsButtonLoading(true);
+    if( quantity === 0 ) {
+      toast.error('Quantity must not be zero');
+      setIsButtonLoading(false);
+      return;
     }
-  }, [isLoading]);
-
-  if (error) {
-    return (
-      <div className="py-20">
-        <p>{error.message}</p>
-      </div>
-    );
-  }
-
+    setIsButtonLoading(true);
+    dispatch(incrementCartItem({ productId: product.id, quantity: quantity })).then((response) => {
+      if (response.meta.requestStatus === 'fulfilled') {
+        toast.success(`${product.name} added successfully`);
+        setIsButtonLoading(false);
+      }
+    });
+  };
+  
   return (
     <div className="py-20">
       <div className="grid grid-cols-12 gap-8">
         <div className="col-start-1 col-end-6">
-          {!isLoading ? <ImageGallery images={product.images} /> : <ImageGalleryLoader />}
+          <ImageGallery images={product.images} />
         </div>
         <div className="col-start-6 col-end-12">
-          {isLoading ? (
-            <>
-              <div className="mb-8 animate-pulse">
-                <div className="h-8 w-96 bg-gray-200"></div>
-              </div>
-              <div className="mb-8 animate-pulse">
-                <div className="h-8 w-96 bg-gray-200"></div>
-              </div>
-              <div className="mb-8 animate-pulse">
-                <div className="h-8 w-96 bg-gray-200"></div>
-              </div>
-              <div className="mb-8 animate-pulse">
-                <div className="h-8 w-96 bg-gray-200"></div>
-              </div>
-            </>
-          ) : (
-            <>
-              <h2 className="mb-8 text-4xl font-light text-black">{product.name}</h2>
-              <div className="flex items-center">
-                <Rating count={product.average_rating} />
-                <span className="ml-2 inline-block">
-                  ({product.review_count} {product.review_count > 1 ? 'reviews' : 'review'})
-                </span>
-              </div>
-              <p className="mt-8 text-base text-[#676767]">{shortDescription}</p>
-              <button className="rounded-full bg-[#689418] px-10 py-3 text-xs text-white">Add to cart</button>
-            </>
-          )}
+          <>
+            <h2 className="mb-8 text-4xl font-light text-black">{product.name}</h2>
+            <div className='flex space-x-2 items-center mb-5'>
+              {!isEmpty(product.sale_price) && <span className='text-2xl font-medium text-[#ee4e23]'>${product.sale_price}</span>}
+              {!isEmpty(product.sale_price) && <span className='text-2xl font-light'><del>${product.regular_price}</del></span>}
+              {isEmpty(product.sale_price) && <span className='text-2xl font-light'>${product.regular_price}</span>}
+            </div>
+            <div className="mb-8 text-base text-[#676767]" dangerouslySetInnerHTML={{ __html: product && product.short_description }} />
+            <div className="flex w-[170px] justify-between rounded-full bg-[#f4f7f8] py-3 mb-10">
+              <button
+                className="px-4 text-base font-medium text-black"
+                onClick={() => setQuantity( quantity === 0 ? 0 : quantity - 1  )}
+              >
+                <MinusIcon className="h-5 w-5" />
+              </button>
+              <span className="px-4 text-base font-medium text-black">{quantity}</span>
+              <button
+                className="px-4 text-base font-medium text-black"
+                onClick={() => setQuantity( quantity + 1 )}
+              >
+                <PlusIcon className="h-5 w-5" />
+              </button>
+            </div>
+            { product.type === 'simple' && <button disabled={isButtonLoading} onClick={addToCart} className="rounded-full bg-[#689418] px-10 py-3 text-xs text-white  disabled:cursor-not-allowed disabled:bg-opacity-20">Add to cart</button> }
+          </>
         </div>
       </div>
 
       <div className="pt-20">
         <h3 className="text-center text-3xl font-light text-black">Relative Products</h3>
-        {isLoading ? (
-          <div className="mt-20 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-            <ProductLoader count={4} />
-          </div>
-        ) : product.categories.length > 0 ? (
-          <RelatedProducts categoryId={product.categories[0].id} excludeProduct={productId} />
+        { product.related_ids.length > 0 ? (
+          <RelatedProducts ids={product.related_ids} />
         ) : (
-          <h2>No related products found</h2>
+          <h2 className='mt-5 text-center'>No related products found</h2>
         )}
       </div>
     </div>
@@ -88,9 +86,29 @@ export default SingleProduct;
 export async function getServerSideProps(context) {
   const { params } = context;
 
-  return {
-    props: {
-      productId: params.id,
-    },
-  };
+  const api = new WooCommerceRestApi({
+    url: process.env.NEXT_PUBLIC_WORDPRESS_SITE_URL,
+    consumerKey: process.env.WC_CONSUMER_KEY,
+    consumerSecret: process.env.WC_CONSUMER_SECRET,
+    version: 'wc/v3',
+  });
+
+  try {
+    const response = await api.get(`products/${params.id}`);
+
+    return {
+      props: {
+        product: response.data
+      }
+    };
+  } catch( error ) {
+    return {
+      props: {
+        product: {},
+      },
+    };
+  }
+
+
+  
 }

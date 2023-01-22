@@ -1,22 +1,22 @@
 import { FaStar } from 'react-icons/fa';
 
 type RatingProps = {
-  count: string;
+  count: number;
 };
 
-const Rating = ({ count }: RatingProps) => {
+const Rating = ({ count = 5 }: RatingProps) => {
   return (
     <>
       <div className="flex space-x-0.5">
         <>
-          {Array.from({ length: Math.ceil(parseFloat(count)) }, (_, i) => {
+          {Array.from({ length: Math.ceil(count) }, (_, i) => {
             return (
               <div key={i + 1} className="text-[#ee4e23]">
                 <FaStar />
               </div>
             );
           })}
-          {Array.from({ length: 5 - parseFloat(count) }, (_, i) => {
+          {Array.from({ length: 5 - count }, (_, i) => {
             return (
               <>
                 <div key={i + 1} className="text-[#9dafb7]">
