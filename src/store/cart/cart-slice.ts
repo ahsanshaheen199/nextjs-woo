@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Product, ProductImage } from '../../types/Product';
 import { decrementCartItem, incrementCartItem } from './cart-actions';
 
-type LineItem = {
+export type LineItem = {
   key: string;
   name: string;
   quantity: number;

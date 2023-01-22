@@ -2,7 +2,6 @@ import Validator from 'validatorjs';
 
 export const useValidator = () => {
   function validate(data: any, rules: Validator.Rules) {
-
     const validator = new Validator(data, rules);
 
     validator.setAttributeFormatter(function (attribute) {
