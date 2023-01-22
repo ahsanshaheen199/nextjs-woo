@@ -6,7 +6,9 @@ import ImageGallery from '../../src/components/partials/SingleProduct/ImageGalle
 import ImageGalleryLoader from '../../src/components/partials/SingleProduct/ImageGalleryLoader';
 import Rating from '../../src/components/partials/SingleProduct/Rating';
 const SingleProduct = ({ productId }) => {
-  const { isLoading, error, data: product } = getProduct(productId as string);
+  const { isLoading, error, data: product } = getProduct(productId as string , {
+    enabled: !! productId
+  });
 
   let shortDescription: string;
   let shortDescriptionElement;

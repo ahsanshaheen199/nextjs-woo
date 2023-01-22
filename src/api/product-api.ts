@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, UseQueryOptions } from '@tanstack/react-query';
 import { AxiosResponse, AxiosResponseHeaders } from 'axios';
 import api from '../lib/axios';
 import { Product } from '../types/Product';
@@ -23,7 +23,7 @@ export function getProducts(queryParamas) {
   });
 }
 
-export function getProduct(id: string) {
+export function getProduct(id: string, queryConfig: Omit<UseQueryOptions<Product, Error>, 'queryKey' | 'queryFn'> = {}) {
   const fetcher = async (queryKey: [string, string]) => {
     const [url, id] = queryKey;
     const response = await api.get(`${url}/${id}`);
@@ -33,24 +33,26 @@ export function getProduct(id: string) {
   return useQuery<Product, Error>({
     queryKey: ['products', id],
     queryFn: ({ queryKey }) => fetcher(queryKey as [string, string]),
+    ...queryConfig,
   });
 }
 
-export function useProductByCategory(id: string) {
+export function useProductByCategory(id: string, queryConfig: Omit<UseQueryOptions<ProductApiResponseProps, Error>, 'queryKey' | 'queryFn'> = {}) {
   const fetcher = async (queryKey: [string, string]) => {
     const [url, id] = queryKey;
-
+    
     const response = await api.get(url, {
       params: {
-        category: id,
+        category: id
       },
     });
 
-    return response.data;
+    return { products: response.data, headers: response.headers };
   };
-  return useQuery<Product[], Error>({
+  return useQuery<ProductApiResponseProps, Error>({
     queryKey: ['products', id],
     queryFn: ({ queryKey }) => fetcher(queryKey as [string, string]),
+    ...queryConfig
   });
 }
 

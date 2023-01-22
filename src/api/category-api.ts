@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, UseQueryOptions } from '@tanstack/react-query';
 import api from '../lib/axios';
 import { Category, CategoryTree } from '../types/Category';
 import ArrayToTree from 'array-to-tree';
@@ -40,7 +40,7 @@ export function getCategoriesTree() {
   });
 }
 
-export function useCategoryById(id: string) {
+export function useCategoryById(id: string, queryConfig: Omit<UseQueryOptions<Category, Error>, 'queryKey' | 'queryFn'> = {}) {
   const fetcher = async (queryKey: [string, string]) => {
     const [url, id] = queryKey;
 
@@ -52,5 +52,6 @@ export function useCategoryById(id: string) {
   return useQuery<Category, Error>({
     queryKey: ['products/categories', id],
     queryFn: ({ queryKey }) => fetcher(queryKey as [string, string]),
+    ...queryConfig
   });
 }

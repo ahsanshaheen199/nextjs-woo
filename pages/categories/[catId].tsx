@@ -3,11 +3,17 @@ import { useProductByCategory } from '../../src/api/product-api';
 import { useCategoryById } from '../../src/api/category-api';
 import Product from '../../src/components/Product';
 import ProductLoader from '../../src/components/shared/ProductLoader';
+import Pagination from '../../src/components/shop/Pagination';
 
 const ProductCategory = () => {
   const { query } = useRouter();
-  const { isLoading: isProductLoading, data: products } = useProductByCategory(query.catId as string);
-  const { isLoading: isCategoryLoading, data: category } = useCategoryById(query.catId as string);
+  
+  const { isLoading: isProductLoading, data: products } = useProductByCategory(query.catId as string, {
+    enabled: !! query.catId
+  });
+  const { isLoading: isCategoryLoading, data: category } = useCategoryById(query.catId as string, {
+    enabled: !! query.catId
+  });
 
   return (
     <div className="py-20">
@@ -26,11 +32,13 @@ const ProductCategory = () => {
             <ProductLoader count={10} />
           </div>
         ) : (
-          <div className="mt-20 grid gap-4 lg:grid-cols-4">
-            {products.map((product) => {
-              return <Product key={product.id} product={product} />;
-            })}
-          </div>
+          <>
+            <div className="mt-20 grid gap-4 lg:grid-cols-4">
+              {products.products.map((product) => {
+                return <Product key={product.id} product={product} />;
+              })}
+            </div>
+          </>
         )}
       </div>
     </div>
