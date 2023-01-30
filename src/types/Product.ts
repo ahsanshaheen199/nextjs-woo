@@ -8,6 +8,7 @@ export type Product = {
   review_count: number;
   average_rating: string;
   short_description: string;
+  description: string;
   categories: [
     {
       id: string;
@@ -26,6 +27,7 @@ export type Product = {
   regular_price: string;
   sale_price: string;
   related_ids: number[];
+  attributes: {id: number;name: string;options: string[];}[];
 };
 
 export type ProductImage = {
