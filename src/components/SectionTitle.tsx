@@ -3,7 +3,7 @@ import React from 'react';
 
 type Props = {
   title: string;
-  description: string;
+  description?: string;
   margin?: string;
 }
 
@@ -12,7 +12,7 @@ const SectionTitle = ({ title, description, margin }: Props) => {
     <div  className={classNames('container mx-auto px-4', margin && margin)}>
       <div className="text-center">
         <h2 className={'text-4xl text-black font-light mb-3'}>{title}</h2>
-        <p className={'text-lg text-[#676767] font-light'}>{description}</p>
+        { description && <p className={'text-lg text-[#676767] font-light'}>{description}</p> }
       </div>
     </div>
   );

@@ -39,6 +39,9 @@ const Product: FunctionComponent<ProductProps> = ({ product }: ProductProps) => 
                   className="h-full w-full object-cover object-center"
                   width={300}
                   height={265}
+                  style={{
+                    width: '100%'
+                  }}
                 />
               ) : (
                 <Image
@@ -47,6 +50,9 @@ const Product: FunctionComponent<ProductProps> = ({ product }: ProductProps) => 
                   className="h-full w-full object-cover object-center"
                   width={300}
                   height={265}
+                  style={{
+                    width: '100%'
+                  }}
                 />
               )}
             </div>

@@ -9,6 +9,8 @@ import Footer from '../src/components/shared/Footer';
 import Head from 'next/head';
 import Subscribe from '../src/components/partials/home/Subscribe';
 import Reviews from '../src/components/partials/home/Reviews';
+import SocialNetwork from '../src/components/partials/home/SocialNetwork';
+import TopRatedProducts from '../src/components/partials/home/TopRatedProducts';
 
 export default function Home({ latestProducts, topRatedProducts, onSaleProducts }) {
   return (
@@ -18,6 +20,15 @@ export default function Home({ latestProducts, topRatedProducts, onSaleProducts 
       </Head>
       <Header />
       <HeroSection />
+
+      <section className='py-20'>
+        <SectionTitle title='Top Rated Products' description='Check out top rated products' margin='pb-20' />
+        <TopRatedProducts />
+      </section>
+
+      <section className='py-20'>
+        <SocialNetwork />
+      </section>
 
       <section className='py-20'>
         <SectionTitle title='Reviews' description='What customers say about our products' margin='pb-20' />
