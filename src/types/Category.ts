@@ -4,6 +4,7 @@ export type Category = {
   slug: string;
   count: number;
   image: CategoryImage;
+  description: string;
 };
 
 export type CategoryImage = {

@@ -19,7 +19,13 @@ export default function Home({ latestProducts, topRatedProducts, onSaleProducts 
         <title>Nextjs Woo | Home</title>
       </Head>
       <Header />
+
       <HeroSection />
+
+      <section className='pt-20'>
+        <SectionTitle title='Featured Categories' description='products at affordable price' margin='pb-20' />
+        <CategoriList />
+      </section>
 
       <section className='py-20'>
         <SectionTitle title='Top Rated Products' description='Check out top rated products' margin='pb-20' />
@@ -37,7 +43,6 @@ export default function Home({ latestProducts, topRatedProducts, onSaleProducts 
 
       <Subscribe />
       <Footer />
-      {/* <CategoriList /> */}
 
       {/* <SectionTitle title={'Recent Products'} />
       <Products products={latestProducts} />
