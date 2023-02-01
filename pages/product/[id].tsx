@@ -14,6 +14,7 @@ import Link from 'next/link';
 import TabList from '../../src/components/partials/SingleProduct/TabList';
 import Layout from '../../src/components/Layout';
 import { useRouter } from 'next/router';
+import Head from 'next/head';
 
 const SingleProduct: NextPage = ({ product }: { product: Product }) => {
   const router = useRouter();
@@ -46,6 +47,9 @@ const SingleProduct: NextPage = ({ product }: { product: Product }) => {
   
   return (
     <>
+      <Head>
+        <title>Nextjs Woo | {product?.name}</title>
+      </Head>
       <Layout>
         <div className="py-20">
           <div className="grid grid-cols-12 gap-8">

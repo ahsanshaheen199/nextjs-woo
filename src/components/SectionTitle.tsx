@@ -11,8 +11,8 @@ const SectionTitle = ({ title, description, margin }: Props) => {
   return (
     <div  className={classNames('container mx-auto px-4', margin && margin)}>
       <div className="text-center">
-        <h2 className={'text-4xl text-black'}>{title}</h2>
-        <p className={'text-lg text-[#676767]'}>{description}</p>
+        <h2 className={'text-4xl text-black font-light mb-3'}>{title}</h2>
+        <p className={'text-lg text-[#676767] font-light'}>{description}</p>
       </div>
     </div>
   );

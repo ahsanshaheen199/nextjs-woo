@@ -8,6 +8,7 @@ import Header from '../src/components/shared/Header';
 import Footer from '../src/components/shared/Footer';
 import Head from 'next/head';
 import Subscribe from '../src/components/partials/home/Subscribe';
+import Reviews from '../src/components/partials/home/Reviews';
 
 export default function Home({ latestProducts, topRatedProducts, onSaleProducts }) {
   return (
@@ -17,7 +18,12 @@ export default function Home({ latestProducts, topRatedProducts, onSaleProducts 
       </Head>
       <Header />
       <HeroSection />
-      <SectionTitle title='Reviews' description='What customers say about our products' margin='pb-20' />
+
+      <section className='py-20'>
+        <SectionTitle title='Reviews' description='What customers say about our products' margin='pb-20' />
+        <Reviews />
+      </section>
+
       <Subscribe />
       <Footer />
       {/* <CategoriList /> */}
