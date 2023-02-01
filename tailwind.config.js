@@ -5,11 +5,16 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        'montserrat': ['Montserrat', 'sans-serif']
+        'montserrat': ['Montserrat', 'sans-serif'],
+        'herr': ['Herr Von Muellerhoff', 'cursive']
       },
       screens: {
         'xl': '1170px',
         '2xl': '1170px'
+      },
+      colors: {
+        'primary': '#ee4e23',
+        'primary-hover': '#d2340a'
       }
     },
   },

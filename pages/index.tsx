@@ -3,11 +3,24 @@ import SectionTitle from '../src/components/SectionTitle';
 import Products from '../src/components/ProductList';
 import CategoryLoader from '../src/components/CategoryLoader';
 import CategoriList from '../src/components/CategoryList';
+import HeroSection from '../src/components/partials/home/HeroSection';
+import Header from '../src/components/shared/Header';
+import Footer from '../src/components/shared/Footer';
+import Head from 'next/head';
+import Subscribe from '../src/components/partials/home/Subscribe';
 
 export default function Home({ latestProducts, topRatedProducts, onSaleProducts }) {
   return (
     <>
-      <CategoriList />
+      <Head>
+        <title>Nextjs Woo | Home</title>
+      </Head>
+      <Header />
+      <HeroSection />
+      <SectionTitle title='Reviews' description='What customers say about our products' margin='pb-20' />
+      <Subscribe />
+      <Footer />
+      {/* <CategoriList /> */}
 
       {/* <SectionTitle title={'Recent Products'} />
       <Products products={latestProducts} />

@@ -2,11 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
-
-
 @layer base {
     body {
         @apply font-montserrat;
+    }
+}
+
+@layer components {
+    .btn-primary {
+        @apply text-sm text-white px-14 font-bold uppercase bg-primary hover:bg-primary-hover py-5 rounded-[27.5px];
     }
 }
 

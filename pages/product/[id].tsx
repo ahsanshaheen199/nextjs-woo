@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import RelatedProducts from '../../src/components/partials/RelatedProducts';
 import ImageGallery from '../../src/components/partials/SingleProduct/ImageGallery';
 import WooCommerceRestApi from '@woocommerce/woocommerce-rest-api';
@@ -12,11 +12,22 @@ import { incrementCartItem } from '../../src/store/cart/cart-actions';
 import toast from 'react-hot-toast';
 import Link from 'next/link';
 import TabList from '../../src/components/partials/SingleProduct/TabList';
+import Layout from '../../src/components/Layout';
+import { useRouter } from 'next/router';
 
 const SingleProduct: NextPage = ({ product }: { product: Product }) => {
+  const router = useRouter();
   const dispatch = useAppDispatch();
   const [isButtonLoading, setIsButtonLoading] = useState<boolean>(false);
+  const [isPageLoading, setIsPageLoading] = useState<boolean>(true);
   const [quantity, setQuantity] = useState<number>(0);
+
+  useEffect(() => {
+    router.isReady && setIsPageLoading(false);
+  }, []);
+
+  console.log(isPageLoading);
+  
   const addToCart = () => {
     setIsButtonLoading(true);
     if( quantity === 0 ) {
@@ -34,63 +45,67 @@ const SingleProduct: NextPage = ({ product }: { product: Product }) => {
   };
   
   return (
-    <div className="py-20">
-      <div className="grid grid-cols-12 gap-8">
-        <div className="col-start-1 col-end-6">
-          <ImageGallery images={product.images} />
-        </div>
-        <div className="col-start-6 col-end-12">
-          <>
-            <h2 className="mb-8 text-4xl font-light text-black">{product.name}</h2>
-            <div className='flex space-x-2 items-center mb-5'>
-              {!isEmpty(product.sale_price) && <span className='text-2xl font-medium text-[#ee4e23]'>${product.sale_price}</span>}
-              {!isEmpty(product.sale_price) && <span className='text-2xl font-light'><del>${product.regular_price}</del></span>}
-              {isEmpty(product.sale_price) && <span className='text-2xl font-light'>${product.regular_price}</span>}
+    <>
+      <Layout>
+        <div className="py-20">
+          <div className="grid grid-cols-12 gap-8">
+            <div className="col-start-1 col-end-6">
+              <ImageGallery images={product.images} />
             </div>
-            <div className="mb-6 text-base text-[#676767]" dangerouslySetInnerHTML={{ __html: product && product.short_description }} />
-            <div className='flex items-center mb-8 space-x-2'>
-              <span className='font-medium text-xs'>Categories:</span>
-              {
-                product.categories.map( category => {
-                  return (
-                    <Link key={category.id} href={`/categories/${category.id}`}>
-                      <a className='text-xs font-light'>{category.name}</a>
-                    </Link>
-                  );
-                } )
-              }
+            <div className="col-start-6 col-end-12">
+              <>
+                <h2 className="mb-8 text-4xl font-light text-black">{product.name}</h2>
+                <div className='flex space-x-2 items-center mb-5'>
+                  {!isEmpty(product.sale_price) && <span className='text-2xl font-medium text-[#ee4e23]'>${product.sale_price}</span>}
+                  {!isEmpty(product.sale_price) && <span className='text-2xl font-light'><del>${product.regular_price}</del></span>}
+                  {isEmpty(product.sale_price) && <span className='text-2xl font-light'>${product.regular_price}</span>}
+                </div>
+                <div className="mb-6 text-base text-[#676767]" dangerouslySetInnerHTML={{ __html: product && product.short_description }} />
+                <div className='flex items-center mb-8 space-x-2'>
+                  <span className='font-medium text-xs'>Categories:</span>
+                  {
+                    product.categories.map( category => {
+                      return (
+                        <Link key={category.id} href={`/categories/${category.id}`}>
+                          <a className='text-xs font-light'>{category.name}</a>
+                        </Link>
+                      );
+                    } )
+                  }
+                </div>
+                <div className="flex w-[170px] justify-between rounded-full bg-[#f4f7f8] py-3 mb-10">
+                  <button
+                    className="px-4 text-base font-medium text-black"
+                    onClick={() => setQuantity( quantity === 0 ? 0 : quantity - 1  )}
+                  >
+                    <MinusIcon className="h-5 w-5" />
+                  </button>
+                  <span className="px-4 text-base font-medium text-black">{quantity}</span>
+                  <button
+                    className="px-4 text-base font-medium text-black"
+                    onClick={() => setQuantity( quantity + 1 )}
+                  >
+                    <PlusIcon className="h-5 w-5" />
+                  </button>
+                </div>
+                { product.type === 'simple' && <button disabled={isButtonLoading} onClick={addToCart} className="rounded-full bg-[#689418] px-10 py-3 text-xs text-white  disabled:cursor-not-allowed disabled:bg-opacity-20">Add to cart</button> }
+              </>
             </div>
-            <div className="flex w-[170px] justify-between rounded-full bg-[#f4f7f8] py-3 mb-10">
-              <button
-                className="px-4 text-base font-medium text-black"
-                onClick={() => setQuantity( quantity === 0 ? 0 : quantity - 1  )}
-              >
-                <MinusIcon className="h-5 w-5" />
-              </button>
-              <span className="px-4 text-base font-medium text-black">{quantity}</span>
-              <button
-                className="px-4 text-base font-medium text-black"
-                onClick={() => setQuantity( quantity + 1 )}
-              >
-                <PlusIcon className="h-5 w-5" />
-              </button>
-            </div>
-            { product.type === 'simple' && <button disabled={isButtonLoading} onClick={addToCart} className="rounded-full bg-[#689418] px-10 py-3 text-xs text-white  disabled:cursor-not-allowed disabled:bg-opacity-20">Add to cart</button> }
-          </>
-        </div>
-      </div>
+          </div>
 
-      <TabList product={product} />
+          <TabList product={product} />
 
-      <div className="pt-20">
-        <h3 className="text-center text-3xl font-light text-black">Relative Products</h3>
-        { product.related_ids.length > 0 ? (
-          <RelatedProducts ids={product.related_ids} />
-        ) : (
-          <h2 className='mt-5 text-center'>No related products found</h2>
-        )}
-      </div>
-    </div>
+          <div className="pt-20">
+            <h3 className="text-center text-3xl font-light text-black">Relative Products</h3>
+            { product.related_ids.length > 0 ? (
+              <RelatedProducts ids={product.related_ids} />
+            ) : (
+              <h2 className='mt-5 text-center'>No related products found</h2>
+            )}
+          </div>
+        </div>
+      </Layout>
+    </>
   );
 };
 
