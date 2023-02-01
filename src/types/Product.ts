@@ -39,4 +39,5 @@ export type ProductImage = {
 
 export type AddToCart = {
   text: string;
+  url: string;
 };
