@@ -66,7 +66,7 @@ const Blog = (props: Props) => {
               } )
             }    
           </div>
-          {data && data.posts.length > 1 && parseInt(data.headers['x-wp-totalpages']) > 1 && <Pagination count={parseInt(data.headers['x-wp-totalpages'])} />}
+          {data && parseInt(data.headers['x-wp-totalpages']) > 1 && <Pagination count={parseInt(data.headers['x-wp-totalpages'])} />}
         </div>
       </Layout>
     </>
