@@ -77,7 +77,7 @@ const Header = () => {
                 </Link>
               </li>
               <li>
-                <Link href="/">
+                <Link href="/posts">
                   <a className="text-sm font-medium text-white">Blog</a>
                 </Link>
               </li>

@@ -30,7 +30,7 @@ export function getCategoriesTree() {
   };
 
   return useQuery<Category[], Error, CategoryTree[]>({
-    queryKey: ['products/categories'],
+    queryKey: ['/products/categories'],
     queryFn: ({ queryKey }) => fetcher(queryKey as [string]),
     select: (data: Category[]) => {
       return ArrayToTree(data, {
@@ -50,7 +50,7 @@ export function useCategoryById(id: string, queryConfig: Omit<UseQueryOptions<Ca
   };
 
   return useQuery<Category, Error>({
-    queryKey: ['products/categories', id],
+    queryKey: ['/products/categories', id],
     queryFn: ({ queryKey }) => fetcher(queryKey as [string, string]),
     ...queryConfig
   });

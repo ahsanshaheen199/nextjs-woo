@@ -11,6 +11,7 @@ import Subscribe from '../src/components/partials/home/Subscribe';
 import Reviews from '../src/components/partials/home/Reviews';
 import SocialNetwork from '../src/components/partials/home/SocialNetwork';
 import TopRatedProducts from '../src/components/partials/home/TopRatedProducts';
+import PostList from '../src/components/partials/home/PostList';
 
 export default function Home({ latestProducts, topRatedProducts, onSaleProducts }) {
   return (
@@ -25,6 +26,11 @@ export default function Home({ latestProducts, topRatedProducts, onSaleProducts 
       <section className='pt-20'>
         <SectionTitle title='Featured Categories' description='products at affordable price' margin='pb-20' />
         <CategoriList />
+      </section>
+
+      <section className='py-20'>
+        <SectionTitle title='Blog' description='All about proper news' margin='pb-20' />
+        <PostList />
       </section>
 
       <section className='py-20'>
