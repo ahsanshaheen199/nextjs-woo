@@ -1,23 +1,39 @@
+import { AxiosResponseHeaders } from 'axios';
+import { GetStaticProps } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useGetPosts } from '../../src/api/blog-api';
 import Layout from '../../src/components/Layout';
 import PostLoader from '../../src/components/shared/PostLoader';
 import Pagination from '../../src/components/shop/Pagination';
+import api from '../../src/lib/axios';
+import { Post } from '../../src/types/Post';
 
-type Props = {}
+type Props = {
+  posts: Post[];
+  headers: AxiosResponseHeaders;
+}
 
-const Blog = (props: Props) => {
+const Blog = ({posts, headers}: Props) => {
+  const [postList, setPosts] = useState<Post[]>(posts);
   const { query } = useRouter();
-  const { isLoading, data } = useGetPosts(query);
+  const { data, isFetching } = useGetPosts(query, {
+    enabled: !! query?.page
+  });
+
+  useEffect( () => {
+    if( data ) {
+      setPosts(data?.posts);
+    }
+  }, [data] );
   
   return (
     <>
       <Head>
-        <title>Nextjs Woo | Blog</title>
+        <title>Blog</title>
       </Head>
 
       <Layout>
@@ -40,33 +56,34 @@ const Blog = (props: Props) => {
 
           <div className='grid grid-cols-3 gap-1'>
             {
-              isLoading ? (
+              isFetching ? (
                 <PostLoader />
-              ) : data.posts && data.posts.map( post => {
-                const date = new Date(post.modified);
-                return (
-                  <div key={post.id} className="mb-8">
-                    {
-                      post.featured_media === 0 ? (
-                        <div className='mb-6'>
-                          <Image width={400} height={300} src={'/blog-list.jpg'} alt={post.title.rendered} />
-                        </div>
-                      ) : (
-                        post._embedded.hasOwnProperty('wp:featuredmedia') && <div className='mb-6'><Image width={400} height={300} src={post._embedded['wp:featuredmedia'][0].source_url} alt={post.title.rendered} /></div>
-                      )
-                    }
-                    <div className='text-center px-10'>
-                      <h2 className='font-medium text-2xl text-black mb-1 hover:text-primary'><Link href={`/post/${post.id}`}><a>{post.title.rendered}</a></Link></h2>
-                      <p className='text-sm text-[#676767]'>
-                        {date.getDate() + '.' + (date.getMonth() + 1) + '.' + date.getFullYear()}
-                      </p>
+              ) :
+                postList?.map( post => {
+                  const date = new Date(post.modified);
+                  return (
+                    <div key={post.id} className="mb-8">
+                      {
+                        post.featured_media === 0 ? (
+                          <div className='mb-6'>
+                            <Image width={400} height={300} src={'/blog-list.jpg'} alt={post.title.rendered} />
+                          </div>
+                        ) : (
+                          post._embedded.hasOwnProperty('wp:featuredmedia') && <div className='mb-6'><Image width={400} height={300} src={post._embedded['wp:featuredmedia'][0].source_url} alt={post.title.rendered} /></div>
+                        )
+                      }
+                      <div className='text-center px-10'>
+                        <h2 className='font-medium text-2xl text-black mb-1 hover:text-primary'><Link href={`/posts/${post.id}`}><a>{post.title.rendered}</a></Link></h2>
+                        <p className='text-sm text-[#676767]'>
+                          {date.getDate() + '.' + (date.getMonth() + 1) + '.' + date.getFullYear()}
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                );
-              } )
+                  );
+                } )
             }    
           </div>
-          {data && parseInt(data.headers['x-wp-totalpages']) > 1 && <Pagination count={parseInt(data.headers['x-wp-totalpages'])} />}
+          {parseInt(headers['x-wp-totalpages']) > 1 && <Pagination count={parseInt(headers['x-wp-totalpages'])} />}
         </div>
       </Layout>
     </>
@@ -74,3 +91,23 @@ const Blog = (props: Props) => {
 };
 
 export default Blog;
+
+export const getStaticProps : GetStaticProps = async () => {
+  try {
+    const response = await api.get('/posts?_embed', {
+      baseURL: process.env.NEXT_PUBLIC_WORDPRESS_SITE_URL + 'wp-json/wp/v2',
+    });
+  
+    return {
+      props: {
+        posts: response.data,
+        headers: response.headers
+      },
+      revalidate: 60
+    };
+  } catch(error) {
+    return {
+      notFound: true
+    };
+  }
+};
