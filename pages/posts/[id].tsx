@@ -14,10 +14,10 @@ type Props = {
 }
 
 const BlogDetails: NextPage = ({post}: Props) => {
-  const { isLoading, data: allPostsExcludingCurrentPost } = useGetPostsExcludingCurrentPost(post.id.toString(), {
-    enabled: !! post.id
+  const { isLoading, data: allPostsExcludingCurrentPost } = useGetPostsExcludingCurrentPost(post?.id.toString(), {
+    enabled: !! post?.id
   });
-  const mainPostDate = new Date(post.modified);
+  const mainPostDate = new Date(post?.modified);
   return (
     <>
       <Head>
@@ -50,21 +50,21 @@ const BlogDetails: NextPage = ({post}: Props) => {
               <h2 className="text-[40px] leading-[auto] font-light mb-10">Blog Details</h2>
               <div className=''>
                 {
-                  post.featured_media === 0 ? (
+                  post?.featured_media === 0 ? (
                     <div>
-                      <Image width={800} height={300} src={'/blog-list.jpg'} alt={post.title.rendered} />
+                      <Image width={800} height={300} src={'/blog-list.jpg'} alt={post?.title?.rendered} />
                     </div>
                   ) : (
-                    post._embedded.hasOwnProperty('wp:featuredmedia') && <div><Image width={850} height={300} src={post._embedded['wp:featuredmedia'][0].source_url} alt={post.title.rendered} /></div>
+                    post?._embedded.hasOwnProperty('wp:featuredmedia') && <div><Image width={850} height={300} src={post._embedded['wp:featuredmedia'][0].source_url} alt={post.title.rendered} /></div>
                   )
                 }
                 <div className='text-center mt-10 mb-8'>
-                  <h1 className='text-2xl font-medium text-black mb-2'>{post.title.rendered}</h1>
+                  <h1 className='text-2xl font-medium text-black mb-2'>{post?.title.rendered}</h1>
                   <p className='text-sm text-[#676767]'>
                     {mainPostDate.getDate() + '.' + (mainPostDate.getMonth() + 1) + '.' + mainPostDate.getFullYear()}
                   </p>
                 </div>
-                <div className='blog-details-content' dangerouslySetInnerHTML={{__html: post.content.rendered}}></div>
+                <div className='blog-details-content' dangerouslySetInnerHTML={{__html: post?.content?.rendered}}></div>
               </div>
             </div>
             <div className="lg:col-span-1">
