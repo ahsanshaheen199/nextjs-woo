@@ -1,4 +1,8 @@
-const PostLoader = ({ count = 6 }) => {
+type Props = {
+  count?: number;
+}
+
+const PostLoader = ({ count = 6 }: Props) => {
   return (
     <>
       {Array.from({ length: count }, (_, i) => {

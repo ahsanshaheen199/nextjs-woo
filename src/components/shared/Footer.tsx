@@ -5,7 +5,7 @@ const Footer = () => {
     <footer>
       <div className="bg-[#f4f7f8]">
         <div className="py-16">
-          <div className="container mx-auto px-4 lg:px-0">
+          <div className="container mx-auto px-4 xl:px-0">
             <div className="grid grid-cols-12 gap-4">
               {/* Column 1 */}
               <div className="col-start-1 col-end-6 lg:col-start-1 lg:col-end-4">

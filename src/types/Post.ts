@@ -10,6 +10,9 @@ export type Post = {
             source_url: string
         }[]
     }
+    content: {
+        rendered: string;
+    }
 }
 
 export type Media = {

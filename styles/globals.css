@@ -26,3 +26,17 @@ ins {
     @apply focus:ring-0 focus:border-[#5993c0];
     box-shadow: none;
 }
+
+:is(.blog-details-content) 
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+select,
+.wp-block-button,
+table,
+p {
+    @apply mb-4;
+}
